@@ -4,19 +4,84 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="demo.demoBoard.mapper.BoardMapper">
-    <resultMap id="boardResultMap" type="demo.demoBoard.model.BoardRequest">
-        <id property="id" column="id"/>
-        <result property="title" column="title"/>
-        <result property="content" column="content"/>
-        <result property="create_date" column="create_date"/>
-    </resultMap>
+    <!-- board 테이블 전체 컬럼 -->
+    <sql id="boardColumns">
+        boardTitle
+        , boardCnt
+        , boardWriter
+        , boardPwd
+        , groupId
+        , categoryId
+        , createDate
+        , modifyDate
+        , boardDel
+    </sql>
 
-    <select id="getAllBoards" resultMap="boardResultMap">
-        SELECT * FROM board
+    <sql id="responseCol">
+        boardId
+        , boardTitle
+        , boardCnt
+        , boardWriter
+        , boardPwd
+        , groupId
+        , categoryId
+        , createDate
+        , modifyDate
+        , boardDel
+    </sql>
+
+    <!-- 게시글 목록 -->
+    <select id="getAllBoards" resultType="demo.demoBoard.model.BoardResponse">
+        SELECT <include refid="responseCol" />
+        FROM board
+        WHERE
+            boardDel = 0
     </select>
 
+    <!-- 게시글 저장 -->
     <insert id="insertBoard" parameterType="demo.demoBoard.model.BoardRequest">
-        INSERT INTO board (title, content, create_date)
-        VALUES (#{title}, #{content}, SYSDATE)
+        INSERT INTO board (<include refid="boardColumns" />)
+        VALUES (
+            #{boardTitle}
+            , #{boardCnt}
+            , #{boardWriter}
+            , #{boardPwd}
+            , #{groupId}
+            , #{categoryId}
+            , SYSDATE
+            , null
+            , 0)
     </insert>
+
+    <!-- 게시글 상세정보 조회 -->
+    <select id="findById" parameterType="int" resultType="demo.demoBoard.model.BoardResponse">
+        SELECT
+        <include refid="responseCol" />
+        FROM
+        board
+        WHERE
+        boardId = #{boardId}
+    </select>
+
+    <!-- 게시글 수정 -->
+    <update id="update" parameterType="demo.demoBoard.model.BoardRequest">
+        UPDATE board
+        SET
+            modifyDate = SYSDATE
+          , boardTitle = #{boardTitle}
+          , boardCnt = #{boardCnt}
+          , boardWriter = #{boardWriter}
+        WHERE
+            boardId = #{boardId}
+    </update>
+
+    <!-- 게시글 삭제 -->
+    <delete id="deleteById" parameterType="int">
+        UPDATE board
+        SET
+            boardDel = 1
+        WHERE
+            boardId = #{boardId}
+    </delete>
+
 </mapper>

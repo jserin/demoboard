@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>board</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.0.3/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<!-- 네비게이션바 -->
+<nav th:replace="~{gnb :: gnbFragment}"></nav>
+<th:block layout:fragment="content"></th:block>
+<!-- 자바스크립트 Start -->
+<!--<th:block layout:fragment="script"></th:block>-->
+<!-- 자바스크립트 End -->
+</body>
+</html>

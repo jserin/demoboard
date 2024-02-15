@@ -1,0 +1,33 @@
+<html layout:decorate="~{layout}">
+<head>
+    <title>board-list</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>게시판</h1>
+    <table style="border:1px solid black">
+        <tr>
+            <th>제목</th>
+            <th>내용</th>
+            <th>작성자</th>
+            <th>비밀번호</th>
+            <th>부모글</th>
+            <th>카테고리</th>
+            <th>작성일시</th>
+            <th>삭제여부</th>
+
+        </tr>
+        <tr th:each="board : ${boards}">
+            <td th:text="${board.boardTitle}"></td>
+            <td th:text="${board.boardCnt}"></td>
+            <td th:text="${board.boardWriter}"></td>
+            <td th:text="${board.boardPwd}"></td>
+            <td th:text="${board.groupId}"></td>
+            <td th:text="${board.categoryId}"></td>
+            <td th:text="${#temporals.format(board.createDate, 'yy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${board.boardDel}"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

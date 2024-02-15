@@ -1,0 +1,19 @@
+<html layout:decorate="~{layout}">
+<head>
+    <title>board-add</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>게시물 추가</h1>
+    <form action="/add" method="post" th:object="${board}">
+        <label>제목: <input type="text" th:field="*{boardTitle}"/></label><br/>
+        <label>내용: <input type="text" th:field="*{boardCnt}"/></label><br/>
+        <label>작성자: <input type="text" th:field="*{boardWriter}"/></label><br/>
+        <label>비밀번호: <input type="number" th:field="*{boardPwd}"/></label><br/>
+        <label>부모글: <input type="number" th:field="*{groupId}"/></label><br/>
+        <label>카테고리: <input type="number" th:field="*{categoryId}"/></label><br/>
+        <input type="submit" value="추가"/>
+    </form>
+</div>
+</body>
+</html>
