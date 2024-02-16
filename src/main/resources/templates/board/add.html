@@ -4,16 +4,27 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <h1>게시물 추가</h1>
-    <form action="/add" method="post" th:object="${board}">
-        <label>제목: <input type="text" th:field="*{boardTitle}"/></label><br/>
-        <label>내용: <input type="text" th:field="*{boardCnt}"/></label><br/>
-        <label>작성자: <input type="text" th:field="*{boardWriter}"/></label><br/>
-        <label>비밀번호: <input type="number" th:field="*{boardPwd}"/></label><br/>
-        <label>부모글: <input type="number" th:field="*{groupId}"/></label><br/>
-        <label>카테고리: <input type="number" th:field="*{categoryId}"/></label><br/>
-        <input type="submit" value="추가"/>
-    </form>
+    <div class="max-w-6xl mx-auto pt-20">
+        <div class="w-full h-32 pb-5">
+            <div class="h-full flex items-end justify-between">
+                <span class="text-3xl font-bold">글 작성</span>
+            </div>
+        </div>
+        <form action="/add" method="post" th:object="${board}" class="text-2xl w-full">
+            <input type="text" th:field="*{boardTitle}" placeholder="제목" class="w-full my-1 border-b"/><br/>
+            <input type="text" th:field="*{boardWriter}" placeholder="작성자" class="w-full my-1 border-b"/><br/>
+            <input type="text" th:field="*{boardPwd}" placeholder="비밀번호" class="w-full my-1 border-b"/><br/>
+            <input type="text" th:field="*{boardCnt}" placeholder="내용" class="w-full my-1 border-b" style="height:40rem;"/><br/>
+            <div class="w-full border-b py-5">
+                <span>파일첨부</span>
+            </div>
+            <div class="flex justify-end text-lg my-5">
+                <a th:href="@{/}" class="bg-gray-500 text-white px-6 py-1 rounded">취소</a>
+                <input type="submit" value="등록" class="bg-indigo-500 text-white px-6 ml-3 py-1 rounded"/>
+            </div>
+        </form>
+    </div>
+
 </div>
 </body>
 </html>

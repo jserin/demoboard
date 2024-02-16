@@ -1,8 +1,8 @@
-package demo.demoBoard.service;
+package demo.demoBoard.board.service;
 
-import demo.demoBoard.mapper.BoardMapper;
-import demo.demoBoard.model.BoardRequest;
-import demo.demoBoard.model.BoardResponse;
+import demo.demoBoard.board.mapper.BoardMapper;
+import demo.demoBoard.board.model.BoardRequest;
+import demo.demoBoard.board.model.BoardResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardMapper boardMapper;
-    /**
+    /*
      * 게시글 저장
      * @param params - 게시글 정보
      * @return Generated PK
@@ -24,7 +24,7 @@ public class BoardService {
         return params.getBoardId();
     }
 
-    /**
+    /*
      * 게시글 리스트 조회
      * @return 게시글 리스트
      */
@@ -32,7 +32,7 @@ public class BoardService {
         return boardMapper.getAllBoards();
     }
 
-    /**
+    /*
      * 게시글 상세정보 조회
      * @param boardId - PK
      * @return 게시글 상세정보
@@ -41,7 +41,7 @@ public class BoardService {
         return boardMapper.findById(boardId);
     }
 
-    /**
+    /*
      * 게시글 수정
      * @param params - 게시글 정보
      * @return PK
@@ -52,7 +52,7 @@ public class BoardService {
         return params.getBoardId();
     }
 
-    /**
+    /*
      * 게시글 삭제
      * @param boardId - PK
      * @return PK

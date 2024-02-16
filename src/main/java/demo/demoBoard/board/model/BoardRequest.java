@@ -1,8 +1,11 @@
-package demo.demoBoard.model;
+package demo.demoBoard.board.model;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class BoardRequest {
@@ -13,5 +16,5 @@ public class BoardRequest {
     private int boardPwd;
     private int groupId;
     private int categoryId;
-    private LocalDateTime modifyDate;
+    private List<MultipartFile> files = new ArrayList<>();
 }

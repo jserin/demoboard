@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="demo.demoBoard.mapper.BoardMapper">
+<mapper namespace="demo.demoBoard.board.mapper.BoardMapper">
     <!-- board 테이블 전체 컬럼 -->
     <sql id="boardColumns">
-        boardTitle
+        boardId
+        ,boardTitle
         , boardCnt
         , boardWriter
         , boardPwd
@@ -31,7 +30,7 @@
     </sql>
 
     <!-- 게시글 목록 -->
-    <select id="getAllBoards" resultType="demo.demoBoard.model.BoardResponse">
+    <select id="getAllBoards" resultType="demo.demoBoard.board.model.BoardResponse">
         SELECT <include refid="responseCol" />
         FROM board
         WHERE
@@ -39,22 +38,26 @@
     </select>
 
     <!-- 게시글 저장 -->
-    <insert id="insertBoard" parameterType="demo.demoBoard.model.BoardRequest">
+    <insert id="insertBoard" parameterType="demo.demoBoard.board.model.BoardRequest">
+        <selectKey keyProperty="boardId" order="BEFORE" resultType="int">
+            SELECT board_seq.nextval FROM dual
+        </selectKey>
         INSERT INTO board (<include refid="boardColumns" />)
         VALUES (
-            #{boardTitle}
+            #{boardId}
+            , #{boardTitle}
             , #{boardCnt}
             , #{boardWriter}
             , #{boardPwd}
-            , #{groupId}
-            , #{categoryId}
+            , 0
+            , 0
             , SYSDATE
             , null
             , 0)
     </insert>
 
     <!-- 게시글 상세정보 조회 -->
-    <select id="findById" parameterType="int" resultType="demo.demoBoard.model.BoardResponse">
+    <select id="findById" parameterType="int" resultType="demo.demoBoard.board.model.BoardResponse">
         SELECT
         <include refid="responseCol" />
         FROM
@@ -64,7 +67,7 @@
     </select>
 
     <!-- 게시글 수정 -->
-    <update id="update" parameterType="demo.demoBoard.model.BoardRequest">
+    <update id="update" parameterType="demo.demoBoard.board.model.BoardRequest">
         UPDATE board
         SET
             modifyDate = SYSDATE

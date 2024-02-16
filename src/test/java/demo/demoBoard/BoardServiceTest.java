@@ -3,9 +3,9 @@ package demo.demoBoard;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import demo.demoBoard.model.BoardRequest;
-import demo.demoBoard.model.BoardResponse;
-import demo.demoBoard.service.BoardService;
+import demo.demoBoard.board.model.BoardRequest;
+import demo.demoBoard.board.model.BoardResponse;
+import demo.demoBoard.board.service.BoardService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,7 +30,7 @@ public class BoardServiceTest {
 
     @Test
     void findById() {
-        BoardResponse board = boardService.findBoardById(3);
+        BoardResponse board = boardService.findBoardById(2);
         try {
             String postJson = new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(board);
             System.out.println(postJson);
