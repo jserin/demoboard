@@ -39,4 +39,17 @@ public class BoardServiceTest {
             throw new RuntimeException(e);
         }
     }
+
+    @Test
+    void update() {
+        BoardRequest params = new BoardRequest();
+        params.setBoardTitle("aaa번 게시글 제목");
+        params.setBoardCnt("1번 게시글 내용");
+        params.setBoardWriter("테스터");
+        params.setBoardPwd(123);
+        params.setGroupId(1);
+        params.setCategoryId(0);
+        int id = boardService.insertBoard(params);
+        System.out.println("생성된 게시글 ID : " + id);
+    }
 }

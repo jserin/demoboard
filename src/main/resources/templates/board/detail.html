@@ -1,0 +1,47 @@
+<html layout:decorate="~{layout}">
+<head>
+    <title>board-detail</title>
+</head>
+<div layout:fragment="content">
+    <div class="max-w-6xl mx-auto pt-20">
+        <div class="w-full h-32 pb-5">
+            <div class="h-full flex items-end justify-between">
+                <span class="text-3xl font-bold">자유게시판</span>
+                <div>search box</div>
+            </div>
+        </div>
+        <div class="w-full">
+            <div>
+                <div th:text="${board.boardTitle}" class="text-4xl font-bold"></div>
+                <div class="flex mt-3">
+                    <span th:text="${board.boardWriter}" class="mr-8"></span>
+                    <span>
+                        <span th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                        <span th:if="${board.modifyDate != null}">(수정됨)</span>
+                    </span>
+                    <span class="ml-auto">
+                        <a th:href="@{|/board/modify/${board.boardId}|}" class="border border-gray-400 px-3 rounded">수정</a>
+                        <a href="javascript:void(0);" th:data-uri="@{|/board/delete/${board.boardId}|}" class="delete border border-gray-400 px-3 rounded">삭제</a>
+                    </span>
+                </div>
+                <div class="mt-2 bg-gray-200 border-t border-b border-black px-16 py-4">
+                    <span>첨부파일</span>
+                </div>
+                <div class="w-full">
+                    <div th:text="${board.boardCnt}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script layout:fragment="script" type='text/javascript'>
+    const delete_elements = document.getElementsByClassName("delete");
+    Array.from(delete_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            if(confirm("정말로 삭제하시겠습니까?")) {
+                location.href = this.dataset.uri;
+            }
+        });
+    });
+</script>
+</html>

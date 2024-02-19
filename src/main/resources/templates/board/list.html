@@ -19,14 +19,22 @@
             </tr>
             <tr th:each="board : ${boards}" class="h-12 text-center border-b">
                 <td th:text="${board.boardId}"></td>
-                <td class="text-left"><a href="#" th:text="${board.boardTitle}" ></a></td>
+                <td class="text-left">
+                    <span th:if="${board.categoryId == 1}" class="text-gray-500 mr-2">[공지사항]</span>
+                    <a th:href="@{|/board/${board.boardId}|}" th:text="${board.boardTitle}" ></a>
+                </td>
                 <td th:text="${board.boardWriter}"></td>
                 <td th:text="${#temporals.format(board.createDate, 'yy-MM-dd HH:mm:ss')}"></td>
             </tr>
         </table>
-        <div class="relative">
-            <div class="text-center mt-5">페이지네이션 자리</div>
-            <a th:href="@{/add}" class="bg-indigo-500 text-white font-bold p-2 rounded-lg absolute top-0 right-0">+ NEW POST</a>
+        <div class="relative mt-5">
+            <!--/* 페이지네이션 */-->
+            <div class="join flex justify-center pt-2">
+                <a href="#" class="join-item btn btn-sm">첫 페이지</a><a href="#" class="join-item btn btn-sm">이전 그룹</a>
+                <p><span class="join-item btn btn-sm bg-gray-100">1</span></p>
+                <a href="#" class="join-item join-item btn btn-sm">다음 그룹</a><a href="#" class="join-item btn btn-sm">마지막 페이지</a>
+            </div>
+            <a th:href="@{/board/add}" class="bg-indigo-500 text-white font-bold p-2 rounded-lg absolute top-1 right-0">+ NEW POST</a>
         </div>
     </div>
 

@@ -2,7 +2,6 @@
 <head>
     <title>board-add</title>
 </head>
-<body>
 <div layout:fragment="content">
     <div class="max-w-6xl mx-auto pt-20">
         <div class="w-full h-32 pb-5">
@@ -10,21 +9,27 @@
                 <span class="text-3xl font-bold">글 작성</span>
             </div>
         </div>
-        <form action="/add" method="post" th:object="${board}" class="text-2xl w-full">
-            <input type="text" th:field="*{boardTitle}" placeholder="제목" class="w-full my-1 border-b"/><br/>
+        <form method="post" th:object="${board}" class="text-2xl w-full" id="saveForm" autocomplete="off">
+            <div class="flex">
+                <select th:field="*{categoryId}" class="w-1/6 my-1 border-b text-base font-bold mr-3">
+                    <option value="2">자유게시판</option>
+                    <option value="1">공지사항</option>
+                </select>
+                <input type="text" th:field="*{boardTitle}" placeholder="제목" class="w-full my-1 border-b"/><br/>
+            </div>
             <input type="text" th:field="*{boardWriter}" placeholder="작성자" class="w-full my-1 border-b"/><br/>
             <input type="text" th:field="*{boardPwd}" placeholder="비밀번호" class="w-full my-1 border-b"/><br/>
-            <input type="text" th:field="*{boardCnt}" placeholder="내용" class="w-full my-1 border-b" style="height:40rem;"/><br/>
+            <textarea th:field="*{boardCnt}" placeholder="content" class="w-full my-1 border-b" style="height:40rem;"></textarea><br/>
             <div class="w-full border-b py-5">
                 <span>파일첨부</span>
             </div>
             <div class="flex justify-end text-lg my-5">
-                <a th:href="@{/}" class="bg-gray-500 text-white px-6 py-1 rounded">취소</a>
+                <a th:href="@{/board}" class="bg-gray-500 text-white px-6 py-1 rounded">취소</a>
                 <input type="submit" value="등록" class="bg-indigo-500 text-white px-6 ml-3 py-1 rounded"/>
             </div>
         </form>
     </div>
-
 </div>
-</body>
+<script layout:fragment="script" type='text/javascript'>
+</script>
 </html>
