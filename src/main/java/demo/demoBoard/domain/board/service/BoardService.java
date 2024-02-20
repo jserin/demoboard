@@ -1,8 +1,8 @@
-package demo.demoBoard.board.service;
+package demo.demoBoard.domain.board.service;
 
-import demo.demoBoard.board.mapper.BoardMapper;
-import demo.demoBoard.board.model.BoardRequest;
-import demo.demoBoard.board.model.BoardResponse;
+import demo.demoBoard.domain.board.mapper.BoardMapper;
+import demo.demoBoard.domain.board.model.BoardRequest;
+import demo.demoBoard.domain.board.model.BoardResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,10 +26,11 @@ public class BoardService {
 
     /*
      * 게시글 리스트 조회
-     * @return 게시글 리스트
+     * @param params - search conditions
+     * @return list & pagination information
      */
-    public List<BoardResponse> findAllBoards() {
-        return boardMapper.getAllBoards();
+    public List<BoardResponse> findAllBoards(int offset, int limit, String kw) {
+        return boardMapper.findAllByKeyword(kw, offset, limit);
     }
 
     /*
@@ -57,8 +58,7 @@ public class BoardService {
      * @param boardId - PK
      * @return PK
      */
-    public int deleteBoard(final int boardId) {
+    public void deleteBoard(final int boardId) {
         boardMapper.deleteById(boardId);
-        return boardId;
     }
 }

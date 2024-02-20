@@ -30,9 +30,22 @@
         <div class="relative mt-5">
             <!--/* 페이지네이션 */-->
             <div class="join flex justify-center pt-2">
-                <a href="#" class="join-item btn btn-sm">첫 페이지</a><a href="#" class="join-item btn btn-sm">이전 그룹</a>
-                <p><span class="join-item btn btn-sm bg-gray-100">1</span></p>
-                <a href="#" class="join-item join-item btn btn-sm">다음 그룹</a><a href="#" class="join-item btn btn-sm">마지막 페이지</a>
+                <!-- 첫 페이지 링크 -->
+                <a th:href="@{/board?page=0}" class="join-item btn btn-sm">첫 페이지</a>
+
+<!--                &lt;!&ndash; 이전 그룹 링크 &ndash;&gt;-->
+<!--                <a th:if="${paging.hasPrevious()}" th:href="@{/board(page=${paging.getNumber() - 1})}" class="join-item btn btn-sm">이전 그룹</a>-->
+
+<!--                &lt;!&ndash; 페이지 번호 링크 &ndash;&gt;-->
+<!--                <p th:each="i : ${#numbers.sequence(0, paging.getTotalPages() - 1)}">-->
+<!--                    <a th:href="@{/board(page=${i})}" class="join-item btn btn-sm" th:text="${i + 1}" th:classappend="${i == paging.getNumber() ? 'bg-gray-100' : ''}"></a>-->
+<!--                </p>-->
+
+<!--                &lt;!&ndash; 다음 그룹 링크 &ndash;&gt;-->
+<!--                <a th:if="${paging.hasNext()}" th:href="@{/board(page=${paging.getNumber() + 1})}" class="join-item btn btn-sm">다음 그룹</a>-->
+
+                <!-- 마지막 페이지 링크 -->
+                <a th:href="@{/board?page=${paging.getTotalPages() - 1}}" class="join-item btn btn-sm">마지막 페이지</a>
             </div>
             <a th:href="@{/board/add}" class="bg-indigo-500 text-white font-bold p-2 rounded-lg absolute top-1 right-0">+ NEW POST</a>
         </div>

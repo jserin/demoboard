@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="demo.demoBoard.board.mapper.BoardMapper">
+<mapper namespace="demo.demoBoard.domain.board.mapper.BoardMapper">
     <!-- board 테이블 전체 컬럼 -->
     <sql id="boardColumns">
         boardId
@@ -16,18 +16,25 @@
         , boardDel
     </sql>
 
-    <!-- 게시글 목록 -->
-    <select id="getAllBoards" resultType="demo.demoBoard.board.model.BoardResponse">
-        SELECT <include refid="boardColumns" />
-        FROM board
-        WHERE
-            boardDel = 0
-        ORDER BY
-        boardId DESC
-    </select>
+<!--    &lt;!&ndash; 게시글 목록 &ndash;&gt;-->
+<!--    <select id="getAllBoards" parameterType="demo.demoBoard.common.dto.SearchDto" resultType="demo.demoBoard.domain.board.model.BoardResponse">-->
+<!--        SELECT *-->
+<!--        FROM (-->
+<!--        SELECT <include refid="boardColumns" />,-->
+<!--        ROWNUM AS rn-->
+<!--        FROM-->
+<!--        board-->
+<!--        WHERE-->
+<!--        boardDel = 0-->
+<!--        ORDER BY-->
+<!--        boardId DESC-->
+<!--        )-->
+<!--        WHERE-->
+<!--        rn BETWEEN #{pagination.limitStart} AND #{pagination.limitEnd}-->
+<!--    </select>-->
 
     <!-- 게시글 저장 -->
-    <insert id="insertBoard" parameterType="demo.demoBoard.board.model.BoardRequest">
+    <insert id="insertBoard" parameterType="demo.demoBoard.domain.board.model.BoardRequest">
         <selectKey keyProperty="boardId" order="BEFORE" resultType="int">
             SELECT board_seq.nextval FROM dual
         </selectKey>
@@ -46,7 +53,7 @@
     </insert>
 
     <!-- 게시글 상세정보 조회 -->
-    <select id="findById" parameterType="int" resultType="demo.demoBoard.board.model.BoardResponse">
+    <select id="findById" parameterType="int" resultType="demo.demoBoard.domain.board.model.BoardResponse">
         SELECT
         <include refid="boardColumns" />
         FROM
@@ -56,7 +63,7 @@
     </select>
 
     <!-- 게시글 수정 -->
-    <update id="update" parameterType="demo.demoBoard.board.model.BoardRequest">
+    <update id="update" parameterType="demo.demoBoard.domain.board.model.BoardRequest">
         UPDATE board
         SET
             modifyDate = SYSDATE
@@ -76,5 +83,24 @@
         WHERE
             boardId = #{boardId}
     </delete>
+
+    <select id="findAllByKeyword" parameterType="map" resultType="demo.demoBoard.domain.board.model.BoardResponse">
+        select * from (
+        select rownum as rnum, br.*
+        from (
+        select distinct <include refid="boardColumns" />
+        from board
+        where
+        boardDel = 0
+        and (
+        boardTitle like '%' || #{kw} || '%'
+        or boardCnt like '%' || #{kw} || '%'
+        or boardWriter like '%' || #{kw} || '%'
+        )
+        order by createDate desc
+        ) br
+        where rownum &lt;= #{limit}
+        ) where rnum &gt; #{offset}
+    </select>
 
 </mapper>

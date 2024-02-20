@@ -3,9 +3,9 @@ package demo.demoBoard;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import demo.demoBoard.board.mapper.BoardMapper;
-import demo.demoBoard.board.model.BoardRequest;
-import demo.demoBoard.board.model.BoardResponse;
+import demo.demoBoard.domain.board.mapper.BoardMapper;
+import demo.demoBoard.domain.board.model.BoardRequest;
+import demo.demoBoard.domain.board.model.BoardResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,10 +48,10 @@ public class BoardMapperTest {
         }
     }
 
-    @Test
-    void delete() {
-        System.out.println("삭제 이전의 전체 게시글 개수는 : " + boardMapper.getAllBoards().size() + "개입니다.");
-        boardMapper.deleteById(2);
-        System.out.println("삭제 이후의 전체 게시글 개수는 : " + boardMapper.getAllBoards().size() + "개입니다.");
-    }
+//    @Test
+//    void delete() {
+//        System.out.println("삭제 이전의 전체 게시글 개수는 : " + boardMapper.getAllBoards().size() + "개입니다.");
+//        boardMapper.deleteById(2);
+//        System.out.println("삭제 이후의 전체 게시글 개수는 : " + boardMapper.getAllBoards().size() + "개입니다.");
+//    }
 }

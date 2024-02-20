@@ -1,4 +1,4 @@
-package demo.demoBoard.board.model;
+package demo.demoBoard.domain.board.model;
 
 import lombok.Getter;
 

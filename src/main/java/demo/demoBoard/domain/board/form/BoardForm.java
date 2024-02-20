@@ -1,4 +1,4 @@
-package demo.demoBoard.board.form;
+package demo.demoBoard.domain.board.form;
 
 import lombok.Getter;
 import lombok.Setter;
