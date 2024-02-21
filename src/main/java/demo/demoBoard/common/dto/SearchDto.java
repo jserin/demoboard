@@ -11,8 +11,8 @@ public class SearchDto {
     private int page;
     private int recordSize;
     private int pageSize;
-    private String keyword;
-    private String searchType;
+    private String kw;
+    private String kwc;
     private Pagination pagination;
 
     public SearchDto() {

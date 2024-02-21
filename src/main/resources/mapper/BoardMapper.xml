@@ -27,6 +27,9 @@
         board
         WHERE
         boardDel = 0
+        <if test="kw != null and kw != ''">
+            AND boardTitle LIKE '%' || #{kw} || '%'
+        </if>
         )
         where row_num between #{pagination.limitStart} and #{pagination.limitEnd}
     </select>

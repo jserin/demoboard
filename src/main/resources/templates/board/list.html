@@ -7,7 +7,19 @@
         <div class="w-full h-32 pb-5">
             <div class="h-full flex items-end justify-between">
                 <span class="text-3xl font-bold">자유게시판</span>
-                <div>search box</div>
+                <div>
+                    <label class="input input-bordered flex justify-between gap-2">
+                        <select th:value="${kwc}" type="text" id="search_kwc" class="h-full border-r">
+                            <option value="all" th:selected="${kwc == 'all'}">전체</option>
+                            <option value="title" th:selected="${kwc == 'title'}">제목</option>
+                            <option value="content" th:selected="${kwc == 'content'}">내용</option>
+                            <option value="tAc" th:selected="${kwc == 'tAc'}">제목+내용</option>
+                            <option value="writer" th:selected="${kwc == 'writer'}">작성자</option>
+                        </select>
+                        <input type="text" id="search_kw" class="inline-block bg-transparent" th:value="${kw}" />
+                        <button type="button" id="btn_search"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" /></svg></button>
+                    </label>
+                </div>
             </div>
         </div>
         <table class="w-full">
@@ -32,15 +44,19 @@
             <div class="join flex justify-center pt-2">
                 <button class="page-link join-item btn btn-sm" href="javascript:void(0)" th:data-page="${1}"><<</button>
                 <button class="page-link join-item btn btn-sm" href="javascript:void(0)" th:data-page="${boards.pagination.getStartPage() - 1}"><</button>
-                <button class="page-link join-item btn btn-sm" th:each="page: ${#numbers.sequence(0, boards.pagination.getTotalPageCount())}"
-                        th:if="${page >= boards.pagination.getStartPage() and page <= boards.pagination.getEndPage()}" th:text="${page}"
-                        href="javascript:void(0)" th:data-page="${page}"
-                        th:classappend="${page == params.page ? 'bg-gray-200' : ''}"></button>
+                <button class="page-link join-item btn btn-sm"
+                        th:href="@{|/board?page=${page}&kwc=${kwc}&kw=${kw}|}"
+                        th:each="page: ${#numbers.sequence(1, boards.pagination.getTotalPageCount())}"
+                        th:if="${page >= boards.pagination.getStartPage() and page <= boards.pagination.getEndPage()}"
+                        th:text="${page}"
+                        th:classappend="${page == params.page ? 'bg-gray-200' : ''}">
+                </button>
                 <button class="page-link join-item btn btn-sm" href="javascript:void(0)" th:data-page="${boards.pagination.getEndPage() + 1}">></button>
                 <button class="page-link join-item btn btn-sm" href="javascript:void(0)" th:data-page="${boards.pagination.getTotalPageCount()}">>></button>
             </div>
             <form th:action="@{/board}" method="get" id="searchForm">
-<!--                <input type="hidden" id="kw" name="kw" th:value="${kw}">-->
+                <input type="hidden" id="kwc" name="kwc" th:value="${kwc}">
+                <input type="hidden" id="kw" name="kw" th:value="${kw}">
                 <input type="hidden" id="page" name="page" th:value="${params.page}">
             </form>
             <a th:href="@{/board/add}" class="bg-indigo-500 text-white font-bold p-2 rounded-lg absolute top-1 right-0">+ NEW POST</a>
@@ -53,8 +69,15 @@
         element.addEventListener('click', function() {
             document.getElementById('page').value = this.dataset.page;
             document.getElementById('searchForm').submit();
-            console.log(document.getElementById('page').value);
         });
+    });
+
+    const btn_search = document.getElementById("btn_search");
+    btn_search.addEventListener('click', function() {
+        document.getElementById('kwc').value = document.getElementById('search_kwc').value;
+        document.getElementById('kw').value = document.getElementById('search_kw').value;
+        document.getElementById('page').value = 1;
+        document.getElementById('searchForm').submit();
     });
 </script>
 </html>
