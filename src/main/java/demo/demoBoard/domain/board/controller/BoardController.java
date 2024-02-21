@@ -25,12 +25,8 @@ public class BoardController {
 
     // 자유게시판 목록
     @GetMapping("")
-    public String index(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
-                        @RequestParam(value = "kw", defaultValue = "") String kw) {
-        int pageSize = 15;
-        int offset = page * pageSize;
-        List<BoardResponse> boards = boardService.findAllBoards(offset, pageSize, kw);
-        model.addAttribute("kw", kw);
+    public String index(Model model) {
+        List<BoardResponse> boards = boardService.findAllBoards();
         model.addAttribute("boards", boards);
         return "board/list";
     }

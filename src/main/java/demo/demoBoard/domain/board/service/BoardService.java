@@ -26,11 +26,10 @@ public class BoardService {
 
     /*
      * 게시글 리스트 조회
-     * @param params - search conditions
-     * @return list & pagination information
+     * @return 게시글 리스트
      */
-    public List<BoardResponse> findAllBoards(int offset, int limit, String kw) {
-        return boardMapper.findAllByKeyword(kw, offset, limit);
+    public List<BoardResponse> findAllBoards() {
+        return boardMapper.getAllBoards();
     }
 
     /*

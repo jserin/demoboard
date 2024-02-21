@@ -3,7 +3,6 @@ package demo.demoBoard.domain.board.mapper;
 import demo.demoBoard.domain.board.model.BoardRequest;
 import demo.demoBoard.domain.board.model.BoardResponse;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,7 +12,7 @@ public interface BoardMapper {
      * 게시글 리스트 조회
      * @return 게시글 리스트
      */
-    List<BoardResponse> findAllByKeyword(@Param("kw") String kw, @Param("offset") int offset, @Param("limit") int limit);
+    List<BoardResponse> getAllBoards();
 
     /*
      * 게시글 저장

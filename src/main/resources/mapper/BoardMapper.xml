@@ -16,22 +16,15 @@
         , boardDel
     </sql>
 
-<!--    &lt;!&ndash; 게시글 목록 &ndash;&gt;-->
-<!--    <select id="getAllBoards" parameterType="demo.demoBoard.common.dto.SearchDto" resultType="demo.demoBoard.domain.board.model.BoardResponse">-->
-<!--        SELECT *-->
-<!--        FROM (-->
-<!--        SELECT <include refid="boardColumns" />,-->
-<!--        ROWNUM AS rn-->
-<!--        FROM-->
-<!--        board-->
-<!--        WHERE-->
-<!--        boardDel = 0-->
-<!--        ORDER BY-->
-<!--        boardId DESC-->
-<!--        )-->
-<!--        WHERE-->
-<!--        rn BETWEEN #{pagination.limitStart} AND #{pagination.limitEnd}-->
-<!--    </select>-->
+    <!-- 게시글 목록 -->
+    <select id="getAllBoards" resultType="demo.demoBoard.domain.board.model.BoardResponse">
+        SELECT <include refid="boardColumns" />
+        FROM board
+        WHERE
+        boardDel = 0
+        ORDER BY
+        boardId DESC
+    </select>
 
     <!-- 게시글 저장 -->
     <insert id="insertBoard" parameterType="demo.demoBoard.domain.board.model.BoardRequest">
@@ -83,24 +76,5 @@
         WHERE
             boardId = #{boardId}
     </delete>
-
-    <select id="findAllByKeyword" parameterType="map" resultType="demo.demoBoard.domain.board.model.BoardResponse">
-        select * from (
-        select rownum as rnum, br.*
-        from (
-        select distinct <include refid="boardColumns" />
-        from board
-        where
-        boardDel = 0
-        and (
-        boardTitle like '%' || #{kw} || '%'
-        or boardCnt like '%' || #{kw} || '%'
-        or boardWriter like '%' || #{kw} || '%'
-        )
-        order by createDate desc
-        ) br
-        where rownum &lt;= #{limit}
-        ) where rnum &gt; #{offset}
-    </select>
 
 </mapper>
