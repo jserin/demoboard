@@ -16,14 +16,30 @@
         , boardDel
     </sql>
 
-    <!-- 게시글 목록 -->
-    <select id="getAllBoards" resultType="demo.demoBoard.domain.board.model.BoardResponse">
-        SELECT <include refid="boardColumns" />
-        FROM board
+    <!-- 게시글 리스트 조회 -->
+    <select id="findAll" parameterType="demo.demoBoard.common.dto.SearchDto" resultType="demo.demoBoard.domain.board.model.BoardResponse">
+        SELECT *
+        FROM (
+        SELECT
+        ROW_NUMBER() OVER(ORDER BY boardId desc) as row_num,
+        <include refid="boardColumns"/>
+        FROM
+        board
         WHERE
         boardDel = 0
-        ORDER BY
-        boardId DESC
+        )
+        where row_num between #{offset} and #{recordSize}
+    </select>
+
+
+    <!-- 게시글 수 카운팅 -->
+    <select id="count" parameterType="demo.demoBoard.common.dto.SearchDto" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            board
+        WHERE
+            boardDel = 0
     </select>
 
     <!-- 게시글 저장 -->

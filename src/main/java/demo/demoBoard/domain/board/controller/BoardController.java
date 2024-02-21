@@ -1,5 +1,6 @@
 package demo.demoBoard.domain.board.controller;
 
+import demo.demoBoard.common.dto.SearchDto;
 import demo.demoBoard.domain.board.model.BoardRequest;
 import demo.demoBoard.domain.board.model.BoardResponse;
 import demo.demoBoard.domain.board.service.BoardService;
@@ -25,8 +26,8 @@ public class BoardController {
 
     // 자유게시판 목록
     @GetMapping("")
-    public String index(Model model) {
-        List<BoardResponse> boards = boardService.findAllBoards();
+    public String index(@ModelAttribute("params") final SearchDto params, Model model) {
+        List<BoardResponse> boards = boardService.findAllBoards(params);
         model.addAttribute("boards", boards);
         return "board/list";
     }

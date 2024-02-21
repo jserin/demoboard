@@ -1,5 +1,6 @@
 package demo.demoBoard.domain.board.service;
 
+import demo.demoBoard.common.dto.SearchDto;
 import demo.demoBoard.domain.board.mapper.BoardMapper;
 import demo.demoBoard.domain.board.model.BoardRequest;
 import demo.demoBoard.domain.board.model.BoardResponse;
@@ -28,8 +29,8 @@ public class BoardService {
      * 게시글 리스트 조회
      * @return 게시글 리스트
      */
-    public List<BoardResponse> findAllBoards() {
-        return boardMapper.getAllBoards();
+    public List<BoardResponse> findAllBoards(final SearchDto params) {
+        return boardMapper.findAll(params);
     }
 
     /*

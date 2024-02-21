@@ -1,5 +1,6 @@
 package demo.demoBoard.domain.board.mapper;
 
+import demo.demoBoard.common.dto.SearchDto;
 import demo.demoBoard.domain.board.model.BoardRequest;
 import demo.demoBoard.domain.board.model.BoardResponse;
 import org.apache.ibatis.annotations.Mapper;
@@ -12,7 +13,18 @@ public interface BoardMapper {
      * 게시글 리스트 조회
      * @return 게시글 리스트
      */
-    List<BoardResponse> getAllBoards();
+//    List<BoardResponse> getAllBoards();
+    /*
+     * 게시글 리스트 조회
+     * @return 게시글 리스트
+     */
+    List<BoardResponse> findAll(SearchDto params);
+
+    /*
+     * 게시글 수 카운팅
+     * @return 게시글 수
+     */
+    int count(SearchDto params);
 
     /*
      * 게시글 저장
