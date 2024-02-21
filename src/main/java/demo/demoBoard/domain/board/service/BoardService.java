@@ -1,6 +1,8 @@
 package demo.demoBoard.domain.board.service;
 
 import demo.demoBoard.common.dto.SearchDto;
+import demo.demoBoard.common.paging.Pagination;
+import demo.demoBoard.common.paging.PagingResponse;
 import demo.demoBoard.domain.board.mapper.BoardMapper;
 import demo.demoBoard.domain.board.model.BoardRequest;
 import demo.demoBoard.domain.board.model.BoardResponse;
@@ -8,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -29,8 +32,20 @@ public class BoardService {
      * 게시글 리스트 조회
      * @return 게시글 리스트
      */
-    public List<BoardResponse> findAllBoards(final SearchDto params) {
-        return boardMapper.findAll(params);
+    public PagingResponse<BoardResponse> findAllBoards(final SearchDto params) {
+
+        // 조건 해당 데이터가 없는 경우
+        int count = boardMapper.count(params);
+        if (count < 1) {
+            return new PagingResponse<>(Collections.emptyList(), null);
+        }
+
+        Pagination pagination = new Pagination(count, params);
+        params.setPagination(pagination);
+
+        // 계산된 페이지 정보의 일부(limitStart, recordSize)를 기준으로 리스트 데이터 조회 후 응답 데이터 반환
+        List<BoardResponse> list = boardMapper.findAll(params);
+        return new PagingResponse<>(list, pagination);
     }
 
     /*
