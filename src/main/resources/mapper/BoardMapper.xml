@@ -28,7 +28,7 @@
         WHERE
         boardDel = 0
         )
-        where row_num between #{pagination.limitStart} and #{recordSize}
+        where row_num between #{pagination.limitStart} and #{pagination.limitEnd}
     </select>
 
 
