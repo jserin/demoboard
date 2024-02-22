@@ -13,10 +13,9 @@
                             <option value="all" th:selected="${kwc == 'all'}">전체</option>
                             <option value="title" th:selected="${kwc == 'title'}">제목</option>
                             <option value="content" th:selected="${kwc == 'content'}">내용</option>
-                            <option value="tAc" th:selected="${kwc == 'tAc'}">제목+내용</option>
                             <option value="writer" th:selected="${kwc == 'writer'}">작성자</option>
                         </select>
-                        <input type="text" id="search_kw" class="inline-block bg-transparent" th:value="${kw}" />
+                        <input type="text" id="search_kw" class="inline-block bg-transparent" th:value="${kw}" placeholder="검색"/>
                         <button type="button" id="btn_search"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" /></svg></button>
                     </label>
                 </div>
@@ -38,17 +37,21 @@
                 <td th:text="${board.boardWriter}"></td>
                 <td th:text="${#temporals.format(board.createDate, 'yy-MM-dd HH:mm:ss')}"></td>
             </tr>
+            <tr th:if="${boards.getList().isEmpty()}">
+                <td colspan="4" class="text-center text-gray-600 p-56">게시글이 없습니다.</td>
+            </tr>
         </table>
         <div class="relative mt-5">
             <!--/* 페이지네이션 */-->
-            <div class="join flex justify-center pt-2">
+            <div th:if="${!boards.getList().isEmpty()}" class="join flex justify-center pt-2">
                 <button class="page-link join-item btn btn-sm" href="javascript:void(0)" th:data-page="${1}"><<</button>
                 <button class="page-link join-item btn btn-sm" href="javascript:void(0)" th:data-page="${boards.pagination.getStartPage() - 1}"><</button>
                 <button class="page-link join-item btn btn-sm"
-                        th:href="@{|/board?page=${page}&kwc=${kwc}&kw=${kw}|}"
-                        th:each="page: ${#numbers.sequence(1, boards.pagination.getTotalPageCount())}"
-                        th:if="${page >= boards.pagination.getStartPage() and page <= boards.pagination.getEndPage()}"
+                        th:each="page: ${#numbers.sequence(boards.pagination.getStartPage(), boards.pagination.getEndPage())}"
+                        th:if="${page <= boards.pagination.getEndPage()}"
                         th:text="${page}"
+                        th:href="@{|/board?page=${page}&kwc=${kwc}&kw=${kw}|}"
+                        th:data-page="${page}"
                         th:classappend="${page == params.page ? 'bg-gray-200' : ''}">
                 </button>
                 <button class="page-link join-item btn btn-sm" href="javascript:void(0)" th:data-page="${boards.pagination.getEndPage() + 1}">></button>
@@ -79,5 +82,20 @@
         document.getElementById('page').value = 1;
         document.getElementById('searchForm').submit();
     });
+
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const kwcValue = urlParams.get('kwc');
+        const kwValue = urlParams.get('kw');
+        document.getElementById('kwc').value = kwcValue;
+        document.getElementById('kw').value = kwValue;
+
+        if (kwValue) {
+            document.getElementById('search_kw').value = kwValue;
+        }
+        if (kwcValue) {
+            document.getElementById('search_kwc').value = kwcValue;
+        }
+    };
 </script>
 </html>

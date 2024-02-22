@@ -20,20 +20,17 @@
     <select id="findAll" parameterType="demo.demoBoard.common.dto.SearchDto" resultType="demo.demoBoard.domain.board.model.BoardResponse">
         SELECT *
         FROM (
-        SELECT
-        ROW_NUMBER() OVER(ORDER BY boardId desc) as row_num,
-        <include refid="boardColumns"/>
-        FROM
-        board
-        WHERE
-        boardDel = 0
-        <if test="kw != null and kw != ''">
-            AND boardTitle LIKE '%' || #{kw} || '%'
-        </if>
-        )
+            SELECT
+                ROW_NUMBER() OVER(ORDER BY boardId desc) as row_num,
+                <include refid="boardColumns"/>
+            FROM
+                board
+            WHERE
+                boardDel = 0
+                <include refid="search" />
+            )
         where row_num between #{pagination.limitStart} and #{pagination.limitEnd}
     </select>
-
 
     <!-- 게시글 수 카운팅 -->
     <select id="count" parameterType="demo.demoBoard.common.dto.SearchDto" resultType="int">
@@ -43,6 +40,7 @@
             board
         WHERE
             boardDel = 0
+            <include refid="search" />
     </select>
 
     <!-- 게시글 저장 -->
@@ -67,11 +65,11 @@
     <!-- 게시글 상세정보 조회 -->
     <select id="findById" parameterType="int" resultType="demo.demoBoard.domain.board.model.BoardResponse">
         SELECT
-        <include refid="boardColumns" />
+            <include refid="boardColumns" />
         FROM
-        board
+            board
         WHERE
-        boardId = #{boardId}
+            boardId = #{boardId}
     </select>
 
     <!-- 게시글 수정 -->
@@ -95,5 +93,24 @@
         WHERE
             boardId = #{boardId}
     </delete>
+
+    <sql id="search">
+        <if test="kwc == 'title' and kw != null and kw != ''">
+            AND boardTitle LIKE '%' || #{kw} || '%'
+        </if>
+        <if test="kwc == 'content' and kw != null and kw != ''">
+            AND boardCnt LIKE '%' || #{kw} || '%'
+        </if>
+        <if test="kwc == 'writer' and kw != null and kw != ''">
+            AND boardWriter LIKE '%' || #{kw} || '%'
+        </if>
+        <if test="kwc == 'all' and kw != null and kw != ''">
+            AND (
+            boardTitle LIKE '%' || #{kw} || '%' OR
+            boardCnt LIKE '%' || #{kw} || '%' OR
+            boardWriter LIKE '%' || #{kw} || '%'
+            )
+        </if>
+    </sql>
 
 </mapper>
