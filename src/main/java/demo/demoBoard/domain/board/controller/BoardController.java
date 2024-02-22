@@ -6,6 +6,7 @@ import demo.demoBoard.domain.board.model.BoardRequest;
 import demo.demoBoard.domain.board.model.BoardResponse;
 import demo.demoBoard.domain.board.service.BoardService;
 import demo.demoBoard.common.dto.MessageDto;
+import demo.demoBoard.domain.comment.service.CommentService;
 import demo.demoBoard.file.model.FileRequest;
 import demo.demoBoard.file.service.FileService;
 import demo.demoBoard.file.util.FileUtils;
@@ -22,6 +23,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+    private final CommentService commentService;
     private final FileService fileService;
     private final FileUtils fileUtils;
 
@@ -29,6 +31,8 @@ public class BoardController {
     @GetMapping("")
     public String index(@ModelAttribute("params") final SearchDto params, Model model) {
         PagingResponse<BoardResponse> boards = boardService.findAllBoards(params);
+
+
         model.addAttribute("boards", boards);
         return "board/list";
     }

@@ -27,8 +27,20 @@
                 <div class="mt-2 bg-gray-200 border-t border-b border-black px-16 py-4">
                     <span>첨부파일</span>
                 </div>
-                <div class="w-full">
+                <div class="w-5/6 mx-auto">
                     <div th:text="${board.boardCnt}"></div>
+                </div>
+            </div>
+            <div>
+                <div class="w-full text-center">
+                    <div class="flex w-5/6 mx-auto">
+                        <input type="text" placeholder="작성자" class="textarea textarea-bordered mr-3 mb-3"/><br/>
+                        <input type="text" placeholder="비밀번호" class="textarea textarea-bordered mb-3"/><br/>
+                    </div>
+                    <textarea name="content" placeholder="댓글을 입력하세요" class="textarea textarea-bordered textarea-lg text-base w-5/6 h-32 resize-none"></textarea>
+                    <div class="w-5/6 text-right mx-auto">
+                        <button type="submit" class="btns bg-indigo-500 py-1 px-5 rounded text-white">등록</button>
+                    </div>
                 </div>
             </div>
         </div>

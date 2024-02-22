@@ -6,6 +6,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import demo.demoBoard.domain.board.model.BoardRequest;
 import demo.demoBoard.domain.board.model.BoardResponse;
 import demo.demoBoard.domain.board.service.BoardService;
+import demo.demoBoard.domain.comment.model.CommentRequest;
+import demo.demoBoard.domain.comment.service.CommentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,7 +29,7 @@ public class BoardServiceTest {
             params.setCategoryId(2);
             boardService.insertBoard(params);
         }
-}
+    }
 
     @Test
     void findById() {

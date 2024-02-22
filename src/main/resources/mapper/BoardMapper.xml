@@ -48,7 +48,8 @@
         <selectKey keyProperty="boardId" order="BEFORE" resultType="int">
             SELECT board_seq.nextval FROM dual
         </selectKey>
-        INSERT INTO board (<include refid="boardColumns" />)
+        INSERT INTO board (
+        <include refid="boardColumns" />)
         VALUES (
             #{boardId}
             , #{boardTitle}
