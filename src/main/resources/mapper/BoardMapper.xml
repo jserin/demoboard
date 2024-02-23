@@ -27,6 +27,7 @@
                 board
             WHERE
                 boardDel = 0
+                AND categoryId = 2
                 <include refid="search" />
             )
         where row_num between #{pagination.limitStart} and #{pagination.limitEnd}
@@ -40,6 +41,7 @@
             board
         WHERE
             boardDel = 0
+            AND categoryId = 2
             <include refid="search" />
     </select>
 
