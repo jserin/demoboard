@@ -32,14 +32,45 @@
                 </div>
             </div>
             <div>
-                <div class="w-full text-center">
-                    <div class="flex w-5/6 mx-auto">
-                        <input type="text" placeholder="작성자" class="textarea textarea-bordered mr-3 mb-3"/><br/>
-                        <input type="text" placeholder="비밀번호" class="textarea textarea-bordered mb-3"/><br/>
+                <div class="w-5/6 mx-auto text-2xl font-bold mb-3" th:text="|댓글 (${comments.size()})|"></div>
+                <form method="post" th:action="@{/comment/add}" id="saveForm" autocomplete="off">
+                    <div class="w-5/6 mx-auto text-center bg-gray-200">
+                        <div class="flex border-b border-gray-300">
+                            <input type="hidden" name="boardId" th:value="${board.boardId}">
+                            <input type="text" name="cmtWriter" placeholder="작성자" class="bg-gray-200 p-2 w-1/2"/><br/>
+                            <input type="text" name="cmtPwd" placeholder="비밀번호" class="bg-gray-200 border-l border-gray-300 p-2"/><br/>
+                        </div>
+                        <textarea name="cmtCnt" placeholder="댓글을 입력하세요" class="text-base w-full h-32 p-2 resize-none bg-gray-200"></textarea>
                     </div>
-                    <textarea name="content" placeholder="댓글을 입력하세요" class="textarea textarea-bordered textarea-lg text-base w-5/6 h-32 resize-none"></textarea>
                     <div class="w-5/6 text-right mx-auto">
-                        <button type="submit" class="btns bg-indigo-500 py-1 px-5 rounded text-white">등록</button>
+                        <input type="submit" value="등록" class="btns bg-indigo-500 py-1 px-5 rounded text-white mt-2">
+                    </div>
+                </form>
+                <div th:each="comment, loop : ${comments}" class="comment w-5/6 mx-auto my-5 border-b">
+                    <div class="flex">
+                        <div th:text="${comment.cmtWriter}" class="mr-5 font-bold"></div>
+                        <span th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                        <span th:if="${comment.modifyDate != null}">(수정됨)</span>
+                        <div class="text-sm ml-auto">
+                            <button href="#" class="border border-gray-400 px-1 rounded">답글</button>
+                            <button class="editBtn border border-gray-400 px-1 rounded">수정</button>
+                            <button href="javascript:void(0);" th:data-uri="@{|/comment/delete/${comment.cmtId}|}" class="delete border border-gray-400 px-1 rounded">삭제</button>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div th:text="${comment.cmtCnt}" class="cmtCnt py-2"></div>
+                        <form method="post" th:action="@{/comment/modify}" autocomplete="off" class="edit-space w-full hidden">
+                            <div class="flex hidden">
+                                <input type="hidden" name="cmtId" th:value="${comment.cmtId}">
+                                <input type="hidden" name="cmtWriter" th:value="${comment.cmtWriter}"/><br/>
+                                <input type="hidden" name="cmtPwd" th:value="${comment.cmtPwd}"/><br/>
+                            </div>
+                            <textarea name="cmtCnt" type="text" class="edit-input w-full h-36 resize-none top-2 border" th:text="${comment.cmtCnt}"></textarea>
+                            <div class="flex justify-end mb-2 text-sm text-white">
+                                <input type="submit" value="저장" class="save-button border px-1 mr-2 bg-indigo-500 rounded">
+                                <button class="cancel-button border px-1 bg-indigo-500 rounded">취소</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -53,6 +84,28 @@
             if(confirm("정말로 삭제하시겠습니까?")) {
                 location.href = this.dataset.uri;
             }
+        });
+    });
+
+    // 수정 버튼 클릭
+    document.querySelectorAll('.editBtn').forEach(function(button) {
+        button.addEventListener('click', function() {
+            let commentContent = this.parentElement.parentElement.nextElementSibling.querySelector('.cmtCnt');
+            commentContent.classList.add('hidden');
+
+            let editSpace = this.parentElement.parentElement.nextElementSibling.querySelector('.edit-space');
+            editSpace.classList.remove('hidden');
+        });
+    });
+
+    // 취소 버튼 클릭
+    document.querySelectorAll('.cancel-button').forEach(function(button) {
+        button.addEventListener('click', function() {
+            let commentContent = this.parentElement.parentElement.previousElementSibling;
+            commentContent.classList.remove('hidden');
+
+            let editSpace = this.parentElement.parentElement;
+            editSpace.classList.add('hidden');
         });
     });
 </script>

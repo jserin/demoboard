@@ -50,9 +50,9 @@
         UPDATE cmtTbl
         SET
             modifyDate = SYSDATE
-          , boardCnt = #{boardCnt}
-          , boardWriter = #{boardWriter}
-          , boardPwd = #{boardPwd}
+          , cmtCnt = #{cmtCnt}
+          , cmtWriter = #{cmtWriter}
+          , cmtPwd = #{cmtPwd}
         WHERE
             cmtId = #{cmtId}
     </update>

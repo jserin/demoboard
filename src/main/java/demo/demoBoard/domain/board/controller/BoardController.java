@@ -6,6 +6,7 @@ import demo.demoBoard.domain.board.model.BoardRequest;
 import demo.demoBoard.domain.board.model.BoardResponse;
 import demo.demoBoard.domain.board.service.BoardService;
 import demo.demoBoard.common.dto.MessageDto;
+import demo.demoBoard.domain.comment.model.CommentResponse;
 import demo.demoBoard.domain.comment.service.CommentService;
 import demo.demoBoard.file.model.FileRequest;
 import demo.demoBoard.file.service.FileService;
@@ -41,7 +42,10 @@ public class BoardController {
     @GetMapping("/{boardId}")
     public String detail(@PathVariable("boardId") Integer boardId, Model model) {
         BoardResponse board = boardService.findBoardById(boardId);
+        List<CommentResponse> comments = commentService.findAllComment(boardId);
+
         model.addAttribute("board", board);
+        model.addAttribute("comments", comments);
         return "board/detail";
     }
     

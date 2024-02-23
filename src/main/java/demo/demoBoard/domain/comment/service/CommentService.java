@@ -42,7 +42,8 @@ public class CommentService {
     @Transactional
     public int updateComment(final CommentRequest params) {
         commentMapper.update(params);
-        return params.getCmtId();
+        CommentResponse comment = findCommentById(params.getCmtId());
+        return comment.getBoardId();
     }
 
     /*

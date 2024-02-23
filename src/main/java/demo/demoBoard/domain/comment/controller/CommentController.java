@@ -18,4 +18,27 @@ public class CommentController {
     private final CommentService commentService;
 
     // 신규 댓글 생성
+    @PostMapping("/add")
+    public String addComment(CommentRequest comment) {
+        commentService.saveComment(comment);
+        return String.format("redirect:/board/%s", comment.getBoardId());
+    }
+
+    // 댓글 수정
+    @PostMapping("/modify")
+    public String modifyComment(CommentRequest comment) {
+        System.out.println("dddd");
+        System.out.println(comment);
+        int id = commentService.updateComment(comment);
+        System.out.println(id);
+        return String.format("redirect:/board/%s", id);
+    }
+
+    // 댓글 삭제
+    @GetMapping("/delete/{cmtId}")
+    public String deleteComment(@PathVariable("cmtId") Integer cmtId) {
+        int id = commentService.findCommentById(cmtId).getBoardId();
+        commentService.deleteComment(cmtId);
+        return String.format("redirect:/board/%s", id);
+    }
 }
