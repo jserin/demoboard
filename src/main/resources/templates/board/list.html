@@ -28,7 +28,7 @@
                 <th class="w-44">작성자</th>
                 <th class="w-48">작성일시</th>
             </tr>
-            <tr th:each="board, loop : ${boards.list}" class="h-12 text-center border-b">
+            <tr th:if="${!boards.list.isEmpty()}" th:each="board, loop : ${boards.list}" class="h-12 text-center border-b">
                 <td th:text="${boards.getPagination().getTotalRecordCount() - (boards.getPagination().getLimitStart() - 1) - loop.index}"></td>
                 <td class="text-left">
                     <span th:if="${board.categoryId == 1}" class="text-gray-500 mr-2">[공지사항]</span>

@@ -9,7 +9,8 @@
                 <span class="text-3xl font-bold">글 작성</span>
             </div>
         </div>
-        <form method="post" th:object="${board}" class="text-2xl w-full" id="saveForm" autocomplete="off">
+        <form method="post" th:object="${board}" class="text-2xl w-full" id="saveForm" autocomplete="off"
+              enctype="multipart/form-data">
             <div class="flex">
                 <select th:field="*{categoryId}" class="w-1/6 my-1 border-b text-base font-bold mr-3">
                     <option value="2">자유게시판</option>
@@ -22,6 +23,18 @@
             <textarea th:field="*{boardCnt}" placeholder="content" class="w-full my-1 border-b" style="height:40rem;"></textarea><br/>
             <div class="w-full border-b py-5">
                 <span>파일첨부</span>
+                <div class="file_list">
+                    <div>
+                        <div class="file_input">
+                            <input type="text" readonly />
+                            <label> 첨부파일
+                                <input type="file" name="files" onchange="selectFile(this);" />
+                            </label>
+                        </div>
+                        <button type="button" onclick="removeFile(this);" class="btns del_btn"><span>삭제</span></button>
+                        <button type="button" onclick="addFile();" class="btns fn_add_btn"><span>파일 추가</span></button>
+                    </div>
+                </div>
             </div>
             <div class="flex justify-end text-lg my-5">
                 <a th:href="@{/board}" class="bg-gray-500 text-white px-6 py-1 rounded">취소</a>
@@ -31,5 +44,53 @@
     </div>
 </div>
 <script layout:fragment="script" type='text/javascript'>
+        // 파일 선택
+    function selectFile(element) {
+
+        const file = element.files[0];
+        const filename = element.closest('.file_input').querySelector('input[type="text"]');
+
+        if ( !file ) {
+            filename.value = '';
+            return false;
+        }
+
+        // 2. 파일 크기가 10MB를 초과하는 경우
+        const fileSize = Math.floor(file.size / 1024 / 1024);
+        if (fileSize > 10) {
+            alert('10MB 이하의 파일로 업로드해 주세요.');
+            filename.value = '';
+            element.value = '';
+            return false;
+        }
+
+        // 3. 파일명 지정
+        filename.value = file.name;
+    }
+
+
+    // 파일 추가
+    function addFile() {
+        const fileDiv = document.createElement('div');
+        fileDiv.innerHTML =`
+            <div class="file_input">
+                <input type="text" readonly />
+                <label> 첨부파일
+                    <input type="file" name="files" onchange="selectFile(this);" />
+                </label>
+            </div>
+            <button type="button" onclick="removeFile(this);" class="btns del_btn"><span>삭제</span></button>
+        `;
+        document.querySelector('.file_list').appendChild(fileDiv);
+    }
+
+
+    // 파일 삭제
+    function removeFile(element) {
+        const fileInput = element.parentElement.querySelector('input[type="file"]');
+        fileInput.value = '';
+        const fileDiv = element.closest('div');
+        fileDiv.remove();
+    }
 </script>
 </html>

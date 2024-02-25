@@ -1,4 +1,4 @@
-package demo.demoBoard.file.util;
+package demo.demoBoard.common.util;
 
 import demo.demoBoard.file.model.FileRequest;
 import org.springframework.stereotype.Component;
@@ -68,9 +68,9 @@ public class FileUtils {
      * @param filename 원본 파일명
      * @return 디스크에 저장할 파일명
      */
-    private String generateSaveFilename(final String filename) {
+    private String generateSaveFilename(final String fileName) {
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-        String extension = StringUtils.getFilenameExtension(filename);
+        String extension = StringUtils.getFilenameExtension(fileName);
         return uuid + "." + extension;
     }
 

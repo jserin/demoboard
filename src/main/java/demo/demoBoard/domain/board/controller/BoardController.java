@@ -10,7 +10,7 @@ import demo.demoBoard.domain.comment.model.CommentResponse;
 import demo.demoBoard.domain.comment.service.CommentService;
 import demo.demoBoard.file.model.FileRequest;
 import demo.demoBoard.file.service.FileService;
-import demo.demoBoard.file.util.FileUtils;
+import demo.demoBoard.common.util.FileUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

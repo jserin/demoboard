@@ -4,7 +4,8 @@
 <mapper namespace="demo.demoBoard.file.mapper.FileMapper">
     <!-- fileTbl 테이블 전체 컬럼 -->
     <sql id="fileColumns">
-        fileName
+        fileId
+        , fileName
         , saveName
         , fileSize
         , createDate
@@ -15,12 +16,16 @@
 
     <!-- 파일 정보 저장 -->
     <insert id="saveAll" parameterType="list">
-        INSERT INTO tb_file (
+        <selectKey keyProperty="fileId" order="BEFORE" resultType="int">
+            SELECT file_seq.nextval FROM dual
+        </selectKey>
+        INSERT INTO fileTbl (
         <include refid="fileColumns" />
         ) VALUES
         <foreach item="file" collection="list" separator=",">
             (
-            #{file.fileName}
+            #{file.fileId}
+            , #{file.fileName}
             , #{file.saveName}
             , #{file.fileSize}
             , SYSDATE
@@ -30,4 +35,46 @@
             )
         </foreach>
     </insert>
+
+    <!-- 파일 리스트 조회 -->
+    <select id="findAllByBoardId" parameterType="int" resultType="demo.demoBoard.file.model.FileResponse">
+        SELECT
+        <include refid="fileColumns" />
+        FROM
+        fileTbl
+        WHERE
+        fileDel = 0
+        AND boardId = #{value}
+        ORDER BY
+        fileId
+    </select>
+
+    <!-- 파일 리스트 조회 -->
+    <select id="findAllByIds" parameterType="list" resultType="demo.demoBoard.file.model.FileResponse">
+        SELECT
+        <include refid="fileColumns" />
+        FROM
+        fileTbl
+        WHERE
+        fileDel = 0
+        AND fileId IN
+        <foreach item="fileId" collection="list" open="(" separator="," close=")">
+            #{fileId}
+        </foreach>
+        ORDER BY
+        fileId
+    </select>
+
+    <!-- 파일 삭제 -->
+    <delete id="deleteAllByIds" parameterType="list">
+        UPDATE fileTbl
+        SET
+        fileDel = 1
+        , modifyDate = NOW()
+        WHERE
+        fileId IN
+        <foreach item="fileId" collection="list" open="(" separator="," close=")">
+            #{fileId}
+        </foreach>
+    </delete>
 </mapper>

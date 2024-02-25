@@ -63,3 +63,6 @@ VALUES (1, '공지사항');
 
 INSERT INTO category (categoryId, categoryName)
 VALUES (2, '자유게시판');
+
+create user c##serin identified by 123;
+grant resource, connect, dba to c##serin;
