@@ -44,10 +44,12 @@ public class BoardController {
         BoardResponse board = boardService.findBoardById(boardId);
         List<CommentResponse> comments = commentService.findAllComment(boardId);
         List<FileResponse> files = fileService.findAllFileByBoardId(boardId);
+        List<BoardResponse> reBoards = boardService.findByGroupId(boardId);
 
         model.addAttribute("board", board);
         model.addAttribute("comments", comments);
-        model.addAttribute("files", files);;
+        model.addAttribute("files", files);
+        model.addAttribute("reBoards", reBoards);;
         return "board/detail";
     }
     
@@ -63,6 +65,27 @@ public class BoardController {
     public String addSubmit(BoardRequest board, Model model) {
         int id = boardService.insertBoard(board);
         List<FileRequest> files = fileUtils.uploadFiles(board.getFiles());
+        fileService.saveFiles(id, files);
+        MessageDto message = new MessageDto("게시글 생성이 완료되었습니다.", "/board/" + id, RequestMethod.GET, null);
+        return showMessageAndRedirect(message, model);
+    }
+
+    // 답글 추가 페이지
+    @GetMapping("/add/{boardId}")
+    public String addReBoard(@PathVariable("boardId") Integer boardId, Model model) {
+
+        model.addAttribute("board", new BoardRequest());
+        return "board/add";
+    }
+
+    // 답글 추가
+    @PostMapping("/add/{boardId}")
+    public String addReBoard(@PathVariable("boardId") Integer boardId, BoardRequest reBoard, Model model) {
+        reBoard.setGroupId(boardId);
+
+        int id = boardService.insertReBoard(reBoard);
+
+        List<FileRequest> files = fileUtils.uploadFiles(reBoard.getFiles());
         fileService.saveFiles(id, files);
         MessageDto message = new MessageDto("게시글 생성이 완료되었습니다.", "/board/" + id, RequestMethod.GET, null);
         return showMessageAndRedirect(message, model);

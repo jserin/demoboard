@@ -15,6 +15,12 @@ public interface CommentMapper {
     void save(CommentRequest params);
 
     /*
+     * 대댓글 저장
+     * @param params - 댓글 정보
+     */
+    void saveReCmt(CommentRequest params);
+
+    /*
      * 댓글 상세정보 조회
      * @param id - PK
      * @return 댓글 상세정보
@@ -35,10 +41,17 @@ public interface CommentMapper {
 
     /*
      * 댓글 리스트 조회
-     * @param postId - 게시글 번호 (FK)
+     * @param boardId - 게시글 번호 (FK)
      * @return 댓글 리스트
      */
     List<CommentResponse> findAll(int boardId);
+
+    /*
+     * 대댓글 리스트 조회
+     * @param groupId
+     * @return 대댓글 리스트
+     */
+    List<CommentResponse> findAllByGroupId(int GroupId);
 
     /*
      * 댓글 수 카운팅

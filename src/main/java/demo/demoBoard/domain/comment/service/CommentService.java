@@ -26,6 +26,17 @@ public class CommentService {
     }
 
     /*
+     * 대댓글 저장
+     * @param params - 댓글 정보
+     * @return Generated PK
+     */
+    @Transactional
+    public int saveReCmt(final CommentRequest params) {
+        commentMapper.saveReCmt(params);
+        return params.getBoardId();
+    }
+
+    /*
      * 댓글 상세정보 조회
      * @param id - PK
      * @return 댓글 상세정보
@@ -64,5 +75,14 @@ public class CommentService {
      */
     public List<CommentResponse> findAllComment(final int boardId) {
         return commentMapper.findAll(boardId);
+    }
+
+    /*
+     * 대댓글 리스트 조회
+     * @param groupId
+     * @return 댓글 리스트
+     */
+    public List<CommentResponse> findAllByGroupId(final int groupId) {
+        return commentMapper.findAllByGroupId(groupId);
     }
 }

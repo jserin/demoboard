@@ -16,6 +16,12 @@ public interface BoardMapper {
     List<BoardResponse> findAll(SearchDto params);
 
     /*
+     * 답글 리스트 조회
+     * @return 답글 리스트
+     */
+    List<BoardResponse> findByGroupId(int groupId);
+
+    /*
      * 게시글 수 카운팅
      * @return 게시글 수
      */
@@ -26,6 +32,12 @@ public interface BoardMapper {
      * @param board - 게시글 정보
      */
     void insertBoard(BoardRequest board);
+
+    /*
+     * 답글 저장
+     * @param board - 게시글 정보
+     */
+    void insertReBoard(BoardRequest board);
 
     /*
      * 게시글 상세정보 조회

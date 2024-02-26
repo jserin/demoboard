@@ -35,6 +35,26 @@
         )
     </insert>
 
+    <!-- 대댓글 저장 -->
+    <insert id="saveReCmt" parameterType="demo.demoBoard.domain.comment.model.CommentRequest">
+        <selectKey keyProperty="cmtId" order="BEFORE" resultType="int">
+            SELECT cmt_seq.nextval FROM dual
+        </selectKey>
+        INSERT INTO cmtTbl (
+        <include refid="commentColumns" />
+        ) VALUES (
+        #{cmtId}
+        , #{cmtCnt}
+        , #{cmtWriter}
+        , #{cmtPwd}
+        , #{groupId}
+        , #{boardId}
+        , SYSDATE
+        , null
+        , 0
+        )
+    </insert>
+
     <!-- 댓글 상세정보 조회 -->
     <select id="findById" parameterType="int" resultType="demo.demoBoard.domain.comment.model.CommentResponse">
         SELECT
@@ -77,5 +97,18 @@
             AND boardId = #{boardId}
         ORDER BY
             cmtId DESC
+    </select>
+
+    <!-- 대댓글 리스트 조회 -->
+    <select id="findAllByGroupId" parameterType="int" resultType="demo.demoBoard.domain.comment.model.CommentResponse">
+        SELECT
+        <include refid="commentColumns" />
+        FROM
+        cmtTbl
+        WHERE
+        cmtDel = 0
+        AND groupId = #{groupId}
+        ORDER BY
+        cmtId
     </select>
 </mapper>

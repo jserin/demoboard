@@ -8,5 +8,6 @@ public class CommentRequest {
     private String cmtCnt;
     private String cmtWriter;
     private int cmtPwd;
+    private int groupId;
     private int boardId;
 }

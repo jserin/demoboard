@@ -30,7 +30,17 @@
                     </span>
                 </div>
                 <div class="w-5/6 mx-auto">
-                    <div th:text="${board.boardCnt}"></div>
+                    <div th:text="${board.boardCnt}" class="my-10"></div>
+                </div>
+                <div class="w-4/6 mb-5 bg-gray-100 mx-auto text-sm">
+                    <div th:each="reBoard, loop : ${reBoards}" class="py-1">
+                        <a th:href="@{|/board/${reBoard.boardId}|}" th:text="|ㄴ ${reBoard.boardTitle}|"></a>
+
+                    </div>
+                </div>
+                <div class="flex justify-center">
+                    <a th:href="@{/board}" class="border rounded bg-gray-100 px-5 py-2 mr-2">목록</a>
+                    <a th:href="@{|/board/add/${board.boardId}|}" class="border rounded bg-indigo-500 ml-2 px-5 py-2 text-white">답글</a>
                 </div>
             </div>
             <div>
@@ -48,31 +58,46 @@
                         <input type="submit" value="등록" class="btns bg-indigo-500 py-1 px-5 rounded text-white mt-2">
                     </div>
                 </form>
-                <div th:each="comment, loop : ${comments}" class="comment w-5/6 mx-auto my-5 border-b">
-                    <div class="flex">
-                        <div th:text="${comment.cmtWriter}" class="mr-5 font-bold"></div>
-                        <span th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
-                        <span th:if="${comment.modifyDate != null}">(수정됨)</span>
-                        <div class="text-sm ml-auto">
-                            <button href="#" class="border border-gray-400 px-1 rounded">답글</button>
-                            <button class="editBtn border border-gray-400 px-1 rounded">수정</button>
-                            <button href="javascript:void(0);" th:data-uri="@{|/comment/delete/${comment.cmtId}|}" class="delete border border-gray-400 px-1 rounded">삭제</button>
+                <div th:each="comment, loop : ${comments}" class="comment w-5/6 mx-auto my-5">
+                    <div th:if="${comment.groupId == 0}" class="border-b">
+                        <div class="flex">
+                            <div th:text="${comment.cmtWriter}" class="mr-5 font-bold"></div>
+                            <span th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                            <span th:if="${comment.modifyDate != null}">(수정됨)</span>
+                            <div class="text-sm ml-auto">
+                                <button class="reBtn border border-gray-400 px-1 rounded">답글</button>
+                                <button class="editBtn border border-gray-400 px-1 rounded">수정</button>
+                                <button href="javascript:void(0);" th:data-uri="@{|/comment/delete/${comment.cmtId}|}" class="delete border border-gray-400 px-1 rounded">삭제</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="relative">
-                        <div th:text="${comment.cmtCnt}" class="cmtCnt py-2"></div>
-                        <form method="post" th:action="@{/comment/modify}" autocomplete="off" class="edit-space w-full hidden">
-                            <div class="flex hidden">
-                                <input type="hidden" name="cmtId" th:value="${comment.cmtId}">
-                                <input type="hidden" name="cmtWriter" th:value="${comment.cmtWriter}"/><br/>
-                                <input type="hidden" name="cmtPwd" th:value="${comment.cmtPwd}"/><br/>
+                        <div class="relative">
+                            <div th:text="${comment.cmtCnt}" class="cmtCnt py-2"></div>
+                            <form method="post" th:action="@{/comment/modify}" autocomplete="off" class="edit-space w-full hidden">
+                                <div class="flex hidden">
+                                    <input type="hidden" name="cmtId" th:value="${comment.cmtId}">
+                                    <input type="hidden" name="cmtWriter" th:value="${comment.cmtWriter}"/>
+                                    <input type="hidden" name="cmtPwd" th:value="${comment.cmtPwd}"/>
+                                </div>
+                                <textarea name="cmtCnt" type="text" class="edit-input w-full h-36 resize-none top-2 border" th:text="${comment.cmtCnt}"></textarea>
+                                <div class="flex justify-end mb-2 text-sm text-white">
+                                    <input type="submit" value="저장" class="save-button border px-1 bg-indigo-500 rounded">
+                                </div>
+                            </form>
+                            <div class="recomment-space" th:each="test, loop : ${comments}">
+                                <div th:if="${test.groupId == comment.cmtId}" th:text="${test.cmtCnt}"></div>
                             </div>
-                            <textarea name="cmtCnt" type="text" class="edit-input w-full h-36 resize-none top-2 border" th:text="${comment.cmtCnt}"></textarea>
-                            <div class="flex justify-end mb-2 text-sm text-white">
-                                <input type="submit" value="저장" class="save-button border px-1 mr-2 bg-indigo-500 rounded">
-                                <button class="cancel-button border px-1 bg-indigo-500 rounded">취소</button>
-                            </div>
-                        </form>
+                            <form method="post" th:action="@{|/comment/add/${comment.cmtId}|}" autocomplete="off" class="recmt-space w-full hidden">
+                                <div class="flex border border-b-0">
+                                    <input type="hidden" name="boardId" th:value="${comment.boardId}"/>
+                                    <input type="text" name="cmtWriter" placeholder="작성자" class="border-r"/>
+                                    <input type="password" name="cmtPwd" placeholder="비밀번호"/>
+                                </div>
+                                <textarea name="cmtCnt" type="text" class="w-full h-16 resize-none top-2 border"></textarea>
+                                <div class="flex justify-end mb-2 text-sm text-white">
+                                    <input type="submit" value="저장" class="border px-1 bg-indigo-500 rounded">
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -89,25 +114,39 @@
         });
     });
 
+    let editCount = 0;
     // 수정 버튼 클릭
     document.querySelectorAll('.editBtn').forEach(function(button) {
         button.addEventListener('click', function() {
             let commentContent = this.parentElement.parentElement.nextElementSibling.querySelector('.cmtCnt');
-            commentContent.classList.add('hidden');
-
             let editSpace = this.parentElement.parentElement.nextElementSibling.querySelector('.edit-space');
-            editSpace.classList.remove('hidden');
+
+            if (!editCount) {
+                commentContent.classList.add('hidden');
+                editSpace.classList.remove('hidden');
+                editCount = 1;
+            } else {
+                commentContent.classList.remove('hidden');
+                editSpace.classList.add('hidden');
+                editCount = 0;
+            }
         });
     });
 
-    // 취소 버튼 클릭
-    document.querySelectorAll('.cancel-button').forEach(function(button) {
+    let reCount = 0;
+    // 답글 버튼 클릭
+    document.querySelectorAll('.reBtn').forEach(function(button) {
         button.addEventListener('click', function() {
-            let commentContent = this.parentElement.parentElement.previousElementSibling;
-            commentContent.classList.remove('hidden');
+            let reCmtSpace = this.parentElement.parentElement.nextElementSibling.querySelector('.recmt-space');
 
-            let editSpace = this.parentElement.parentElement;
-            editSpace.classList.add('hidden');
+            if (!reCount) {
+             reCmtSpace.classList.remove('hidden');
+             reCount = 1;
+            } else {
+             reCmtSpace.classList.add('hidden');
+             reCount = 0;
+            }
+
         });
     });
 </script>

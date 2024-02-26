@@ -27,7 +27,19 @@ FOREIGN KEY (boardId) REFERENCES board(boardId)
 CREATE TABLE category (
 categoryId NUMBER PRIMARY KEY,
 categoryName VARCHAR2(50) NOT NULL
-)
+);
+
+CREATE TABLE cmtTbl (
+cmtId NUMBER PRIMARY KEY,
+cmtCnt VARCHAR2(255) NOT NULL,
+cmtWriter VARCHAR2(50) NOT NULL,
+cmtPwd NUMBER(10) NOT NULL,
+createDate TIMESTAMP DEFAULT sysdate,
+modifyDate TIMESTAMP,
+groupId NUMBER,
+boardId NUMBER NOT NULL,
+cmtDel CHAR(1) NOT NULL
+);
 
 CREATE SEQUENCE board_seq
 START WITH 1
@@ -50,17 +62,7 @@ NOCYCLE;
 
 ALTER SEQUENCE board_seq RESTART;
 
-CREATE TABLE cmtTbl (
-cmtId NUMBER PRIMARY KEY,
-cmtCnt VARCHAR2(255) NOT NULL,
-cmtWriter VARCHAR2(50) NOT NULL,
-cmtPwd NUMBER(10) NOT NULL,
-createDate TIMESTAMP DEFAULT sysdate,
-modifyDate TIMESTAMP,
-groupId NUMBER,
-boardId NUMBER NOT NULL,
-cmtDel CHAR(1) NOT NULL
-);
+
 
 select * from board;
 select * from cmtTbl;

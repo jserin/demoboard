@@ -29,6 +29,17 @@ public class BoardService {
     }
 
     /*
+     * 답글 저장
+     * @param params - 게시글 정보
+     * @return Generated PK
+     */
+    @Transactional
+    public int insertReBoard(final BoardRequest params) {
+        boardMapper.insertReBoard(params);
+        return params.getBoardId();
+    }
+
+    /*
      * 게시글 리스트 조회
      * @return 게시글 리스트
      */
@@ -43,7 +54,6 @@ public class BoardService {
         Pagination pagination = new Pagination(count, params);
         params.setPagination(pagination);
 
-        // 계산된 페이지 정보의 일부(limitStart, recordSize)를 기준으로 리스트 데이터 조회 후 응답 데이터 반환
         List<BoardResponse> list = boardMapper.findAll(params);
         return new PagingResponse<>(list, pagination);
     }
@@ -75,5 +85,14 @@ public class BoardService {
      */
     public void deleteBoard(final int boardId) {
         boardMapper.deleteById(boardId);
+    }
+
+    /*
+     * 답글 리스트 조회
+     * @param groupId
+     * @return List
+     */
+    public List<BoardResponse> findByGroupId(final int groupId) {
+        return boardMapper.findByGroupId(groupId);
     }
 }

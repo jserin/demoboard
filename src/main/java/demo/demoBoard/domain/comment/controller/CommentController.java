@@ -24,6 +24,14 @@ public class CommentController {
         return String.format("redirect:/board/%s", comment.getBoardId());
     }
 
+    // 신규 대댓글 생성
+    @PostMapping("/add/{cmtId}")
+    public String addReCmt(CommentRequest comment, @PathVariable("cmtId") int cmtId) {
+        comment.setGroupId(cmtId);
+        int id = commentService.saveReCmt(comment);
+        return String.format("redirect:/board/%s", id);
+    }
+
     // 댓글 수정
     @PostMapping("/modify")
     public String modifyComment(CommentRequest comment) {
@@ -36,7 +44,7 @@ public class CommentController {
 
     // 댓글 삭제
     @GetMapping("/delete/{cmtId}")
-    public String deleteComment(@PathVariable("cmtId") Integer cmtId) {
+    public String deleteComment(@PathVariable("cmtId") int cmtId) {
         int id = commentService.findCommentById(cmtId).getBoardId();
         commentService.deleteComment(cmtId);
         return String.format("redirect:/board/%s", id);
