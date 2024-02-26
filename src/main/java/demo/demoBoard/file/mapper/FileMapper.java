@@ -12,7 +12,7 @@ public interface FileMapper {
      * 파일 정보 저장
      * @param files - 파일 정보 리스트
      */
-    void saveAll(List<FileRequest> files);
+    void saveFile(FileRequest file);
 
     /*
      * 파일 리스트 조회
@@ -32,6 +32,13 @@ public interface FileMapper {
      * 파일 삭제
      * @param ids - PK 리스트
      */
-    void deleteAllByIds(List<Integer> ids);
+    void deleteById(int fileId);
+
+    /*
+     * 파일 상세정보 조회
+     * @param id - PK
+     * @return 파일 상세정보
+     */
+    FileResponse findById(int fileId);
 
 }

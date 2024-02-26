@@ -9,6 +9,7 @@ import demo.demoBoard.common.dto.MessageDto;
 import demo.demoBoard.domain.comment.model.CommentResponse;
 import demo.demoBoard.domain.comment.service.CommentService;
 import demo.demoBoard.file.model.FileRequest;
+import demo.demoBoard.file.model.FileResponse;
 import demo.demoBoard.file.service.FileService;
 import demo.demoBoard.common.util.FileUtils;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,6 @@ public class BoardController {
     public String index(@ModelAttribute("params") final SearchDto params, Model model) {
         PagingResponse<BoardResponse> boards = boardService.findAllBoards(params);
 
-
         model.addAttribute("boards", boards);
         return "board/list";
     }
@@ -43,9 +43,11 @@ public class BoardController {
     public String detail(@PathVariable("boardId") Integer boardId, Model model) {
         BoardResponse board = boardService.findBoardById(boardId);
         List<CommentResponse> comments = commentService.findAllComment(boardId);
+        List<FileResponse> files = fileService.findAllFileByBoardId(boardId);
 
         model.addAttribute("board", board);
         model.addAttribute("comments", comments);
+        model.addAttribute("files", files);;
         return "board/detail";
     }
     
@@ -71,6 +73,8 @@ public class BoardController {
     public String modifyForm(@PathVariable("boardId") Integer boardId, Model model) {
         BoardResponse board = boardService.findBoardById(boardId);
         model.addAttribute("board", board);
+        List<FileResponse> files = fileService.findAllFileByBoardId(boardId);
+        model.addAttribute("files", files);
         return "board/add";
     }
 
@@ -85,7 +89,6 @@ public class BoardController {
     // 게시글 삭제
     @GetMapping("/delete/{boardId}")
     public String deleteBoard(@PathVariable("boardId") Integer boardId, Model model) {
-//        BoardResponse board = boardService.findBoardById(boardId);
         boardService.deleteBoard(boardId);
         MessageDto message = new MessageDto("게시글 삭제가 완료되었습니다.", "/board", RequestMethod.GET, null);
         return showMessageAndRedirect(message, model);

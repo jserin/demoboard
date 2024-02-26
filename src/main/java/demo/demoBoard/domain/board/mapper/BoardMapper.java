@@ -13,11 +13,6 @@ public interface BoardMapper {
      * 게시글 리스트 조회
      * @return 게시글 리스트
      */
-//    List<BoardResponse> getAllBoards();
-    /*
-     * 게시글 리스트 조회
-     * @return 게시글 리스트
-     */
     List<BoardResponse> findAll(SearchDto params);
 
     /*

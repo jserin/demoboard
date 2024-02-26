@@ -8,7 +8,8 @@ createDate TIMESTAMP DEFAULT sysdate,
 modifyDate TIMESTAMP,
 groupId NUMBER,
 categoryId NUMBER NOT NULL,
-boardDel CHAR(1) NOT NULL
+boardDel CHAR(1) NOT NULL,
+FOREIGN KEY (categoryId) REFERENCES category(categoryId)
 );
 
 CREATE TABLE fileTbl (
@@ -21,7 +22,7 @@ modifyDate TIMESTAMP,
 fileDel CHAR(1) NOT NULL,
 boardId NUMBER,
 FOREIGN KEY (boardId) REFERENCES board(boardId)
-)
+);
 
 CREATE TABLE category (
 categoryId NUMBER PRIMARY KEY,
@@ -36,6 +37,12 @@ NOCYCLE;
 
 
 CREATE SEQUENCE cmt_seq
+START WITH 1
+INCREMENT BY 1
+NOCACHE
+NOCYCLE;
+
+CREATE SEQUENCE file_seq
 START WITH 1
 INCREMENT BY 1
 NOCACHE
@@ -66,3 +73,11 @@ VALUES (2, '자유게시판');
 
 create user c##serin identified by 123;
 grant resource, connect, dba to c##serin;
+
+-- '공지사항' 추가
+INSERT INTO category (categoryId, categoryName)
+VALUES (1, '공지사항');
+
+-- '자유게시판' 추가
+INSERT INTO category (categoryId, categoryName)
+VALUES (2, '자유게시판');

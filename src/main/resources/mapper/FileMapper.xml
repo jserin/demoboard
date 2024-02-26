@@ -15,25 +15,22 @@
     </sql>
 
     <!-- 파일 정보 저장 -->
-    <insert id="saveAll" parameterType="list">
+    <insert id="saveFile" parameterType="demo.demoBoard.file.model.FileRequest">
         <selectKey keyProperty="fileId" order="BEFORE" resultType="int">
             SELECT file_seq.nextval FROM dual
         </selectKey>
         INSERT INTO fileTbl (
-        <include refid="fileColumns" />
-        ) VALUES
-        <foreach item="file" collection="list" separator=",">
-            (
-            #{file.fileId}
-            , #{file.fileName}
-            , #{file.saveName}
-            , #{file.fileSize}
-            , SYSDATE
-            , NULL
-            , 0
-            , #{file.boardId}
+            <include refid="fileColumns" />
+            ) VALUES (
+            #{fileId},
+            #{fileName},
+            #{saveName},
+            #{fileSize},
+            SYSDATE,
+            NULL,
+            0,
+            #{boardId}
             )
-        </foreach>
     </insert>
 
     <!-- 파일 리스트 조회 -->
@@ -66,15 +63,22 @@
     </select>
 
     <!-- 파일 삭제 -->
-    <delete id="deleteAllByIds" parameterType="list">
+    <delete id="deleteById" parameterType="int">
         UPDATE fileTbl
         SET
         fileDel = 1
-        , modifyDate = NOW()
         WHERE
-        fileId IN
-        <foreach item="fileId" collection="list" open="(" separator="," close=")">
-            #{fileId}
-        </foreach>
+        fileId = #{fileId}
     </delete>
+
+    <!-- 파일 상세정보 조회 -->
+    <select id="findById" parameterType="int" resultType="demo.demoBoard.file.model.FileResponse">
+        SELECT
+        <include refid="fileColumns" />
+        FROM
+        fileTbl
+        WHERE
+        fileDel = 0
+        AND fileId = #{value}
+    </select>
 </mapper>

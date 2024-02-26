@@ -23,8 +23,9 @@ public class FileService {
         }
         for (FileRequest file : files) {
             file.setBoardId(boardId);
+            fileMapper.saveFile(file);
         }
-        fileMapper.saveAll(files);
+
     }
 
     /*
@@ -32,7 +33,7 @@ public class FileService {
      * @param boardId - 게시글 번호 (FK)
      * @return 파일 리스트
      */
-    public List<FileResponse> findAllFileByBoardId(final Integer boardId) {
+    public List<FileResponse> findAllFileByBoardId(final int boardId) {
         return fileMapper.findAllByBoardId(boardId);
     }
 
@@ -41,7 +42,7 @@ public class FileService {
      * @param ids - PK 리스트
      * @return 파일 리스트
      */
-    public List<FileResponse> findAllFileByIds(final List<Integer> ids) {
+    public List<FileResponse> findAllByIds(final List<Integer> ids) {
         if (CollectionUtils.isEmpty(ids)) {
             return Collections.emptyList();
         }
@@ -53,10 +54,16 @@ public class FileService {
      * @param ids - PK 리스트
      */
     @Transactional
-    public void deleteAllFileByIds(final List<Integer> ids) {
-        if (CollectionUtils.isEmpty(ids)) {
-            return;
-        }
-        fileMapper.deleteAllByIds(ids);
+    public void deleteById(final int fileId) {
+        fileMapper.deleteById(fileId);
+    }
+
+    /*
+     * 파일 상세정보 조회
+     * @param id - PK
+     * @return 파일 상세정보
+     */
+    public FileResponse findFileById(final int fileId) {
+        return fileMapper.findById(fileId);
     }
 }

@@ -23,12 +23,10 @@
                         <a href="javascript:void(0);" th:data-uri="@{|/board/delete/${board.boardId}|}" class="delete border border-gray-400 px-3 rounded">삭제</a>
                     </span>
                 </div>
-                <div class="mt-2 bg-gray-200 border-t border-b border-black px-16 py-4">
-                    <span>
-                        <span>첨부파일</span>
-                        <span id="files">
-
-                        </span>
+                <div class="mt-2 bg-gray-200 border-t border-b border-black px-16 py-4 flex items-center">
+                    <span class="mr-5 text-lg font-bold">첨부파일</span>
+                    <span th:each="file, loop : ${files}" class="flex">
+                        <a th:href="@{|/board/${board.boardId}/files/${file.fileId}/download|}" th:download="${file.fileName}" th:text="${file.fileName}" class="mr-5 text-blue-800"></a>
                     </span>
                 </div>
                 <div class="w-5/6 mx-auto">
@@ -112,27 +110,5 @@
             editSpace.classList.add('hidden');
         });
     });
-
-        window.onload = () => {
-        findAllFile();
-    }
-
-    function findAllFile() {
-
-        const boardId = [[${board.boardId}]];
-        const response = getJson(`/board/${boardId}/files`);
-
-        if ( !response.length ) {
-            return false;
-        }
-
-        let fileHtml = '<div class="file_down"><div class="cont">';
-        response.forEach(row => {
-            fileHtml += `<a href="javascript:alert('준비 중입니다.');"><span class="icons"><i class="fas fa-folder-open"></i></span>${row.fileName}</a>`;
-        })
-        fileHtml += '</div></div>';
-
-        document.getElementById('files').innerHTML = fileHtml;
-    }
 </script>
 </html>
