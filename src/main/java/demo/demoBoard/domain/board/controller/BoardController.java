@@ -34,17 +34,18 @@ public class BoardController {
     // 자유게시판 목록
     @GetMapping("")
     public String index(@ModelAttribute("params") final SearchDto params, Model model) {
-        PagingResponse<BoardResponse> boards = boardService.findAllBoards(params);
+        PagingResponse<BoardResponse> boards = boardService.findAll(params);
+        List<BoardResponse> reBoards = boardService.findAllBoards();
 
         model.addAttribute("boards", boards);
+        model.addAttribute("reBoards", reBoards);
+
         return "board/list";
     }
 
     // 게시글 상세 페이지
     @GetMapping("/{boardId}")
     public String detail(@PathVariable("boardId") Integer boardId, Model model) {
-        System.out.println("asdf");
-        System.out.println(boardId);
 
         BoardResponse board = boardService.findBoardById(boardId);
         List<CommentResponse> comments = commentService.findAllComment(boardId);

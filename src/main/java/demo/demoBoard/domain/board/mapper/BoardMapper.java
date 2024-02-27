@@ -15,6 +15,8 @@ public interface BoardMapper {
      */
     List<BoardResponse> findAll(SearchDto params);
 
+    List<BoardResponse> findAllBoards();
+
     /*
      * 답글 리스트 조회
      * @return 답글 리스트

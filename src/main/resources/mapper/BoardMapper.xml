@@ -108,6 +108,17 @@
         boardId
     </select>
 
+    <select id="findAllBoards" resultType="demo.demoBoard.domain.board.model.BoardResponse">
+        SELECT
+        <include refid="boardColumns" />
+        FROM
+        board
+        WHERE
+        boardDel = 0
+        ORDER BY
+        boardId
+    </select>
+
     <!-- 게시글 수정 -->
     <update id="update" parameterType="demo.demoBoard.domain.board.model.BoardRequest">
         UPDATE board

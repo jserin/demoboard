@@ -66,6 +66,8 @@ ALTER SEQUENCE board_seq RESTART;
 
 select * from board;
 select * from cmtTbl;
+select * from category;
+select * from fileTbl;
 
 INSERT INTO category (categoryId, categoryName)
 VALUES (1, '공지사항');

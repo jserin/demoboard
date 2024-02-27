@@ -43,7 +43,7 @@ public class BoardService {
      * 게시글 리스트 조회
      * @return 게시글 리스트
      */
-    public PagingResponse<BoardResponse> findAllBoards(final SearchDto params) {
+    public PagingResponse<BoardResponse> findAll(final SearchDto params) {
 
         // 조건 해당 데이터가 없는 경우
         int count = boardMapper.count(params);
@@ -56,6 +56,10 @@ public class BoardService {
 
         List<BoardResponse> list = boardMapper.findAll(params);
         return new PagingResponse<>(list, pagination);
+    }
+
+    public List<BoardResponse> findAllBoards() {
+        return boardMapper.findAllBoards();
     }
 
     /*

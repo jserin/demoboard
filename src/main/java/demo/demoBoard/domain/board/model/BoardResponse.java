@@ -1,10 +1,13 @@
 package demo.demoBoard.domain.board.model;
 
+import lombok.Data;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-@Getter
+@Data
 public class BoardResponse {
     private int boardId;
     private String boardTitle;

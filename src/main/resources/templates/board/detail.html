@@ -112,7 +112,7 @@
         let boardPwd = [[${board.boardPwd}]];
         let boardId = [[${board.boardId}]];
 
-        if (checkPassword === boardPwd) {
+        if (checkPassword == boardPwd) {
             if (actionType === 'edit') {
                 location.href = "/board/modify/" + boardId;
             } else if (actionType === 'delete') {
@@ -147,7 +147,7 @@
                 let passwordInput = cmtEditBtn.closest('.comment').querySelector('input[name="cmtPwd"]');
                 let checkPwd = prompt("댓글 비밀번호를 입력하세요:");
 
-                if (checkPwd === passwordInput.value) {
+                if (checkPwd == passwordInput.value) {
                     // 수정 공간 선택
                     let commentContent = cmtEditBtn.closest('.comment').querySelector('.cmtCnt');
                     let editSpace = cmtEditBtn.closest('.comment').querySelector('.edit-space');
