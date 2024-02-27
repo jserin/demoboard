@@ -13,6 +13,8 @@ import demo.demoBoard.file.model.FileResponse;
 import demo.demoBoard.file.service.FileService;
 import demo.demoBoard.common.util.FileUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
@@ -41,6 +43,9 @@ public class BoardController {
     // 게시글 상세 페이지
     @GetMapping("/{boardId}")
     public String detail(@PathVariable("boardId") Integer boardId, Model model) {
+        System.out.println("asdf");
+        System.out.println(boardId);
+
         BoardResponse board = boardService.findBoardById(boardId);
         List<CommentResponse> comments = commentService.findAllComment(boardId);
         List<FileResponse> files = fileService.findAllFileByBoardId(boardId);
@@ -105,6 +110,8 @@ public class BoardController {
     @PostMapping("/modify/{boardId}")
     public String modifySubmit(@PathVariable("boardId") Integer boardId, BoardRequest board, Model model) {
         int id = boardService.updateBoard(board);
+        List<FileRequest> files = fileUtils.uploadFiles(board.getFiles());
+        fileService.saveFiles(id, files);
         MessageDto message = new MessageDto("게시글 수정이 완료되었습니다.", "/board/" + id, RequestMethod.GET, null);
         return showMessageAndRedirect(message, model);
     }

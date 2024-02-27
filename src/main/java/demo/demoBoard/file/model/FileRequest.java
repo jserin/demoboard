@@ -18,8 +18,4 @@ public class FileRequest {
         this.saveName = saveName;
         this.fileSize = fileSize;
     }
-
-    public void setBoardId(int boardId) {
-        this.boardId = boardId;
-    }
 }

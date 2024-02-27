@@ -26,7 +26,7 @@ public class CommentController {
 
     // 신규 대댓글 생성
     @PostMapping("/add/{cmtId}")
-    public String addReCmt(CommentRequest comment, @PathVariable("cmtId") int cmtId) {
+    public String addReCmt(CommentRequest comment, @PathVariable(name = "cmtId") int cmtId) {
         comment.setGroupId(cmtId);
         int id = commentService.saveReCmt(comment);
         return String.format("redirect:/board/%s", id);
@@ -35,8 +35,6 @@ public class CommentController {
     // 댓글 수정
     @PostMapping("/modify")
     public String modifyComment(CommentRequest comment) {
-        System.out.println("dddd");
-        System.out.println(comment);
         int id = commentService.updateComment(comment);
         System.out.println(id);
         return String.format("redirect:/board/%s", id);

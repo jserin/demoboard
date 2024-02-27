@@ -19,7 +19,7 @@
                 <input type="text" th:field="*{boardTitle}" placeholder="제목" class="w-full my-1 border-b"/><br/>
             </div>
             <input type="text" th:field="*{boardWriter}" placeholder="작성자" class="w-full my-1 border-b"/><br/>
-            <input type="password" th:field="*{boardPwd}" placeholder="비밀번호" class="w-full my-1 border-b"/><br/>
+            <input type="password" oninput="this.value = this.value.replace(/[^0-9]/g, '')" th:field="*{boardPwd}" placeholder="비밀번호(숫자)" class="w-full my-1 border-b"/><br/>
             <textarea th:field="*{boardCnt}" placeholder="content" class="w-full my-1 border-b" style="height:40rem;"></textarea><br/>
             <div class="w-full border-b py-5">
                 <span class="">파일첨부</span>
@@ -43,7 +43,7 @@
         </form>
         <div th:each="file : ${files}" class="flex mb-3">
             <span th:text="${file.fileName}"></span>
-            <button onclick="deleteFile(${file.getFileId})" class="ml-2 text-red-500">삭제</button>
+            <button href="javascript:void(0);" th:data-uri="@{|/board/${board.boardId}/file/delete/${file.fileId}|}" class="delete ml-2 text-red-500">삭제</button>
         </div>
     </div>
 </div>
@@ -72,7 +72,6 @@
         filename.value = file.name;
     }
 
-
     // 파일 추가
     function addFile() {
         const fileDiv = document.createElement('div');
@@ -98,29 +97,38 @@
         fileDiv.remove();
     }
 
-    function deleteFile(fileId) {
-        // // 확인 메시지 표시
-        // if (!confirm('정말로 이 파일을 삭제하시겠습니까?')) {
-        //     return; // 사용자가 취소하면 함수 종료
-        // }
-        //
-        // // DELETE 요청 보내기
-        // fetch(`/file/delete/${fileId}`, {
-        //     method: 'DELETE'
-        // })
-        // .then(response => {
-        //     if (response.ok) {
-        //         window.location.reload();
-        //     } else {
-        //         // 파일 삭제 실패 시 사용자에게 알림
-        //         alert('파일 삭제에 실패했습니다.');
-        //     }
-        // })
-        // .catch(error => {
-        //     console.error('파일 삭제 오류:', error);
-        //     alert('파일 삭제 중 오류가 발생했습니다.');
-        // });
-        console.log(fileId);
-    }
+    // function deleteFile(fileId) {
+    //     // 확인 메시지 표시
+    //     if (!confirm('정말로 이 파일을 삭제하시겠습니까?')) {
+    //         return; // 사용자가 취소하면 함수 종료
+    //     }
+    //
+    //     // DELETE 요청 보내기
+    //     fetch(`/file/delete/${fileId}`, {
+    //         method: 'DELETE'
+    //     })
+    //     .then(response => {
+    //         if (response.ok) {
+    //             window.location.reload();
+    //         } else {
+    //             // 파일 삭제 실패 시 사용자에게 알림
+    //             alert('파일 삭제에 실패했습니다.');
+    //         }
+    //     })
+    //     .catch(error => {
+    //         console.error('파일 삭제 오류:', error);
+    //         alert('파일 삭제 중 오류가 발생했습니다.');
+    //     });
+    //     console.log(fileId);
+    // }
+
+    const delete_elements = document.getElementsByClassName("delete");
+    Array.from(delete_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            if(confirm("정말로 삭제하시겠습니까?")) {
+                location.href = this.dataset.uri;
+            }
+        });
+    });
 </script>
 </html>

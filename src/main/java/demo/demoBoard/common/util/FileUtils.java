@@ -118,6 +118,8 @@ public class FileUtils {
         String uploadedDate = file.getCreateDate().toLocalDate().format(DateTimeFormatter.ofPattern("yyMMdd"));
         String filename = file.getSaveName();
         Path filePath = Paths.get(uploadPath, uploadedDate, filename);
+        System.out.println("hello");
+        System.out.println(filePath);
         try {
             Resource resource = new UrlResource(filePath.toUri());
             if (!resource.exists() || !resource.isFile()) {

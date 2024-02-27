@@ -8,33 +8,37 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.format.DateTimeFormatter;
+import java.util.List;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 public class FileApiController {
 
     private final FileService fileService;
-    private FileUtils fileUtils;
+    private final FileUtils fileUtils;
 
-    @DeleteMapping("/file/delete/{fileId}")
-    public String deleteFile(@PathVariable int fileId) {
+    @GetMapping("/board/{boardId}/file/delete/{fileId}")
+    public String deleteFile(@PathVariable(name = "boardId") int boardId, @PathVariable(name = "fileId") int fileId) {
         fileService.deleteById(fileId);
-        return "파일이 성공적으로 삭제되었습니다.";
+        return String.format("redirect:/board/modify/%s", boardId );
+    }
+
+    // 파일 리스트 조회
+    @GetMapping("/board/{boardId}/files")
+    public List<FileResponse> findAllFileByPostId(@PathVariable final int boardId) {
+        return fileService.findAllFileByBoardId(boardId);
     }
 
     // 첨부파일 다운로드
-    @GetMapping("/board/{boardId}/files/{fileId}/download")
-    public ResponseEntity<Resource> downloadFile(@PathVariable final int boardId, @PathVariable final int fileId) {
+    @GetMapping("/files/{fileId}/download")
+    public ResponseEntity<Resource> downloadFile(@PathVariable(name = "fileId") final int fileId) {
+
         FileResponse file = fileService.findFileById(fileId);
         Resource resource = fileUtils.readFileAsResource(file);
 

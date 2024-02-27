@@ -38,18 +38,6 @@ public class FileService {
     }
 
     /*
-     * 파일 리스트 조회
-     * @param ids - PK 리스트
-     * @return 파일 리스트
-     */
-    public List<FileResponse> findAllByIds(final List<Integer> ids) {
-        if (CollectionUtils.isEmpty(ids)) {
-            return Collections.emptyList();
-        }
-        return fileMapper.findAllByIds(ids);
-    }
-
-    /*
      * 파일 삭제 (from Database)
      * @param ids - PK 리스트
      */
