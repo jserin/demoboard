@@ -68,7 +68,7 @@
                             <div class="text-sm ml-auto">
                                 <button class="reBtn border border-gray-400 px-1 rounded">답글</button>
                                 <button class="editBtn border border-gray-400 px-1 rounded">수정</button>
-                                <button href="javascript:void(0);" th:data-uri="@{|/comment/delete/${comment.cmtId}|}" class="delete border border-gray-400 px-1 rounded">삭제</button>
+                                <button class="cmtDelete border border-gray-400 px-1 rounded">삭제</button>
                             </div>
                         </div>
                         <div class="relative">
@@ -107,12 +107,12 @@
 </div>
 <script layout:fragment="script" type='text/javascript'>
     // 비밀번호 확인
-    function checkPassword(actionType) {
+    function checkBoardPwd(actionType) {
         let checkPassword = prompt("게시글 비밀번호를 입력하세요:");
         let boardPwd = [[${board.boardPwd}]];
         let boardId = [[${board.boardId}]];
 
-        if (checkPassword == boardPwd) {
+        if (checkPassword === boardPwd) {
             if (actionType === 'edit') {
                 location.href = "/board/modify/" + boardId;
             } else if (actionType === 'delete') {
@@ -129,14 +129,95 @@
 
     // 게시글 수정 버튼 클릭
     document.querySelector('.boardEdit').addEventListener('click', function() {
-        checkPassword('edit');
+        checkBoardPwd('edit');
     });
 
     // 게시글 삭제 버튼 클릭
     const delete_elements = document.querySelector(".delete");
     delete_elements.addEventListener('click', function() {
-        checkPassword('delete');
+        checkBoardPwd('delete');
     });
+
+    // 댓글 수정 버튼 클릭
+    let editCount = 0;
+    let cmtEditBtns = document.querySelectorAll('.editBtn');
+    if (cmtEditBtns) {
+        cmtEditBtns.forEach(function(cmtEditBtn) {
+            cmtEditBtn.addEventListener('click', function () {
+                let passwordInput = cmtEditBtn.closest('.comment').querySelector('input[name="cmtPwd"]');
+                let checkPwd = prompt("댓글 비밀번호를 입력하세요:");
+
+                if (checkPwd === passwordInput.value) {
+                    // 수정 공간 선택
+                    let commentContent = cmtEditBtn.closest('.comment').querySelector('.cmtCnt');
+                    let editSpace = cmtEditBtn.closest('.comment').querySelector('.edit-space');
+
+                    // 수정 공간 출력
+                    if (!editCount) {
+                        commentContent.classList.add('hidden');
+                        editSpace.classList.remove('hidden');
+                        editCount = 1;
+                    } else {
+                        commentContent.classList.remove('hidden');
+                        editSpace.classList.add('hidden');
+                        editCount = 0;
+                    }
+                } else if (checkPwd === null) {
+                    alert("취소되었습니다");
+                } else {
+                    alert("비밀번호가 일치하지 않습니다.");
+                }
+            })
+        })
+    }
+
+    let cmtDeleteBtns = document.querySelectorAll('.cmtDelete');
+    if (cmtDeleteBtns) {
+        cmtDeleteBtns.forEach(function(cmtDeleteBtn) {
+            cmtDeleteBtn.addEventListener('click', function() {
+                let commentContainer = cmtDeleteBtn.closest('.comment');
+                let passwordInput = commentContainer.querySelector('input[name="cmtPwd"]');
+                let cmtIdInput = commentContainer.querySelector('input[name="cmtId"]');
+
+                let cmtId = cmtIdInput.value;
+
+                let checkPwd = prompt("댓글 비밀번호를 입력하세요:");
+
+                // 사용자 입력과 댓글의 비밀번호 비교
+                if (checkPwd === passwordInput.value) {
+                    // 비밀번호가 일치할 때 삭제 수행
+                    if (confirm("정말로 삭제하시겠습니까?")) {
+                        location.href = "/comment/delete/" + cmtId;
+                    }
+                } else if (checkPwd === null) {
+                    alert("취소되었습니다");
+                } else {
+                    alert("비밀번호가 일치하지 않습니다.");
+                }
+            });
+        });
+    }
+
+    // 대댓글 버튼 클릭
+    let reCount = 0;
+    let recommentBtns = document.querySelectorAll('.reBtn');
+    if (recommentBtns) {
+        recommentBtns.forEach(function(recommentBtn) {
+            recommentBtn.addEventListener('click', function() {
+                // 대댓글 버튼이 속한 댓글의 대댓글 공간 선택
+                let reCmtSpace = recommentBtn.closest('.comment').querySelector('.recmt-space');
+
+                // 대댓글 공간 토글
+                if (!reCount) {
+                    reCmtSpace.classList.remove('hidden');
+                    reCount = 1;
+                } else {
+                    reCmtSpace.classList.add('hidden');
+                    reCount = 0;
+                }
+            });
+        });
+    }
 
     // 파일 다운로드
     const download = document.getElementById("download");
@@ -145,44 +226,5 @@
             location.href = this.dataset.uri;
         }
     }
-
-    // 댓글 수정 버튼 클릭
-    let editCount = 0;
-    let cmtEditBtn = document.querySelector('.editBtn');
-    if (cmtEditBtn) {
-        cmtEditBtn.addEventListener('click', function() {
-            let commentContent = document.querySelector('.cmtCnt');
-            let editSpace = document.querySelector('.edit-space');
-
-            if (!editCount) {
-                commentContent.classList.add('hidden');
-                editSpace.classList.remove('hidden');
-                editCount = 1;
-            } else {
-                commentContent.classList.remove('hidden');
-                editSpace.classList.add('hidden');
-                editCount = 0;
-            }
-        });
-    }
-
-    // 대댓글 버튼 클릭
-    let reCount = 0;
-    let recommentBtn = document.querySelector('.reBtn');
-    if (recommentBtn) {
-        recommentBtn.addEventListener('click', function() {
-            let reCmtSpace = document.querySelector('.recmt-space');
-
-            if (!reCount) {
-                reCmtSpace.classList.remove('hidden');
-                reCount = 1;
-            } else {
-                reCmtSpace.classList.add('hidden');
-                reCount = 0;
-            }
-
-        });
-    }
-
 </script>
 </html>

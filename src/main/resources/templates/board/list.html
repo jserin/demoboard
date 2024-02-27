@@ -32,7 +32,9 @@
                 <td th:text="${boards.getPagination().getTotalRecordCount() - (boards.getPagination().getLimitStart() - 1) - loop.index}"></td>
                 <td class="text-left">
                     <span th:if="${board.categoryId == 1}" class="text-gray-500 mr-2">[공지사항]</span>
-                    <a th:href="@{|/board/${board.boardId}|}" th:text="${board.boardTitle}" ></a>
+                    <a th:href="@{|/board/${board.boardId}|}" th:text="${board.boardTitle}"></a>
+                    <div>wow</div>
+                    <div>wow</div>
                 </td>
                 <td th:text="${board.boardWriter}"></td>
                 <td th:text="${#temporals.format(board.createDate, 'yy-MM-dd HH:mm:ss')}"></td>
