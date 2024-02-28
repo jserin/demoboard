@@ -21,7 +21,7 @@ public interface BoardMapper {
      * 답글 리스트 조회
      * @return 답글 리스트
      */
-    List<BoardResponse> findByGroupId(int groupId);
+    List<BoardResponse> findBoardByGroup();
 
     /*
      * 게시글 수 카운팅

@@ -161,16 +161,15 @@
     </sql>
 
     <!--   답글 리스트 조회     -->
-    <select id="findByGroup" parameterType="int" resultType="demo.demoBoard.domain.board.model.BoardResponse">
+    <select id="findBoardByGroup" resultType="demo.demoBoard.domain.board.model.BoardResponse">
         SELECT
-        boardId, groupId, boardTitle, boardDel, LEVEL
+        <include refid="boardColumns" />, LEVEL AS boardLevel
         FROM
         board
-        WHERE
-        boardDel = 0
-        AND groupId = #{groupId}
-        CONNECT BY PRIOR boardId = groupId
-        ORDER BY boardId desc;
+        START WITH  groupId = 0
+        CONNECT BY
+        PRIOR boardId = groupId
+        ORDER BY boardId, boardLevel
     </select>
 
 </mapper>

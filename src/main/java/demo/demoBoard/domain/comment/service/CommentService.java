@@ -73,21 +73,7 @@ public class CommentService {
      * @param boardId - 게시글 번호 (FK)
      * @return 특정 게시글에 등록된 댓글 리스트
      */
-    public List<CommentResponse> findAllComment(final int boardId) {
-        return commentMapper.findAll(boardId);
-    }
-
-    /*
-     * 대댓글 리스트 조회
-     * @param groupId
-     * @return 댓글 리스트
-     */
-    public List<CommentResponse> findAllByGroupId(final int groupId) {
-        return commentMapper.findAllByGroupId(groupId);
-    }
-
     public List<CommentResponse> findCmtByGroup(final int boardId) {
-        System.out.println("service check");
         System.out.println(boardId);
         return commentMapper.findCmtByGroup(boardId);
     }

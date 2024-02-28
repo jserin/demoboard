@@ -86,33 +86,7 @@
             cmtId = #{cmtId}
     </delete>
 
-    <!-- 댓글 리스트 조회 -->
-    <select id="findAll" parameterType="int" resultType="demo.demoBoard.domain.comment.model.CommentResponse">
-        SELECT
-            <include refid="commentColumns" />
-        FROM
-            cmtTbl
-        WHERE
-            cmtDel = 0
-            AND boardId = #{boardId}
-        ORDER BY
-            cmtId DESC
-    </select>
-
-    <!-- 대댓글 리스트 조회 -->
-    <select id="findAllByGroupId" parameterType="int" resultType="demo.demoBoard.domain.comment.model.CommentResponse">
-        SELECT
-        <include refid="commentColumns" />
-        FROM
-        cmtTbl
-        WHERE
-        cmtDel = 0
-        AND groupId = #{groupId}
-        ORDER BY
-        cmtId
-    </select>
-
-<!--    test query-->
+<!--   전체 댓글 리스트 -->
     <select id="findCmtByGroup" parameterType="int" resultType="demo.demoBoard.domain.comment.model.CommentResponse">
         SELECT
         <include refid="commentColumns" />, LEVEL AS cmtLevel

@@ -49,7 +49,7 @@ public class BoardController {
 
         BoardResponse board = boardService.findBoardById(boardId);
         List<FileResponse> files = fileService.findAllFileByBoardId(boardId);
-        List<BoardResponse> reBoards = boardService.findByGroupId(boardId);
+        List<BoardResponse> reBoards = boardService.findByGroupId();
         List<CommentResponse> comments = commentService.findCmtByGroup(boardId);
 
 

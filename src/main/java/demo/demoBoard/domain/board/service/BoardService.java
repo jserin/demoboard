@@ -93,10 +93,9 @@ public class BoardService {
 
     /*
      * 답글 리스트 조회
-     * @param groupId
      * @return List
      */
-    public List<BoardResponse> findByGroupId(final int groupId) {
-        return boardMapper.findByGroupId(groupId);
+    public List<BoardResponse> findByGroupId() {
+        return boardMapper.findBoardByGroup();
     }
 }

@@ -40,25 +40,9 @@ public interface CommentMapper {
     void deleteById(int id);
 
     /*
-     * 댓글 리스트 조회
-     * @param boardId - 게시글 번호 (FK)
-     * @return 댓글 리스트
+     * 전체댓글 리스트 조회
+     * @param boardId
+     * @return 전체댓글 리스트
      */
-    List<CommentResponse> findAll(int boardId);
-
-    /*
-     * 대댓글 리스트 조회
-     * @param groupId
-     * @return 대댓글 리스트
-     */
-    List<CommentResponse> findAllByGroupId(int groupId);
-
-    /*
-     * 댓글 수 카운팅
-     * @param postId - 게시글 번호 (FK)
-     * @return 댓글 수
-     */
-//    int count(int boardId);
-
     List<CommentResponse> findCmtByGroup(int boardId);
 }
