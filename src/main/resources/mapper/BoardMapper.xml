@@ -95,19 +95,6 @@
             boardId = #{boardId}
     </select>
 
-    <!--   답글 리스트 조회     -->
-    <select id="findByGroupId" parameterType="int" resultType="demo.demoBoard.domain.board.model.BoardResponse">
-        SELECT
-        <include refid="boardColumns" />
-        FROM
-        board
-        WHERE
-        boardDel = 0
-        AND groupId = #{groupId}
-        ORDER BY
-        boardId
-    </select>
-
     <select id="findAllBoards" resultType="demo.demoBoard.domain.board.model.BoardResponse">
         SELECT
         <include refid="boardColumns" />
@@ -160,7 +147,22 @@
         </if>
     </sql>
 
-    <!--   답글 리스트 조회     -->
+
+
+    <!--   답글 리스트 조회 param -->
+    <select id="findByGroupId" parameterType="int" resultType="demo.demoBoard.domain.board.model.BoardResponse">
+        SELECT
+        <include refid="boardColumns" />
+        FROM
+        board
+        WHERE
+        boardDel = 0
+        AND groupId = #{groupId}
+        ORDER BY
+        boardId
+    </select>
+
+    <!--   답글 리스트 조회   param x  -->
     <select id="findBoardByGroup" resultType="demo.demoBoard.domain.board.model.BoardResponse">
         SELECT
         <include refid="boardColumns" />, LEVEL AS boardLevel

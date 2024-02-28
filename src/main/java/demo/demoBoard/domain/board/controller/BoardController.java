@@ -35,7 +35,7 @@ public class BoardController {
     @GetMapping("")
     public String index(@ModelAttribute("params") final SearchDto params, Model model) {
         PagingResponse<BoardResponse> boards = boardService.findAll(params);
-        List<BoardResponse> reBoards = boardService.findAllBoards();
+        List<BoardResponse> reBoards = boardService.findBoardByGroup();
 
         model.addAttribute("boards", boards);
         model.addAttribute("reBoards", reBoards);
@@ -49,7 +49,7 @@ public class BoardController {
 
         BoardResponse board = boardService.findBoardById(boardId);
         List<FileResponse> files = fileService.findAllFileByBoardId(boardId);
-        List<BoardResponse> reBoards = boardService.findByGroupId();
+        List<BoardResponse> reBoards = boardService.findByGroupId(boardId);
         List<CommentResponse> comments = commentService.findCmtByGroup(boardId);
 
 

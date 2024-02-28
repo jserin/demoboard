@@ -39,7 +39,7 @@
                     <div class="w-48" th:text="${#temporals.format(board.createDate, 'yy-MM-dd HH:mm:ss')}"></div>
                 </div>
                 <div th:if="${!reBoards.isEmpty()}" th:each="reBoard, loop : ${reBoards}">
-                    <div th:if="${reBoard.groupId == board.boardId}">하하</div>
+                    <div th:text="${reBoard.boardTitle}">하하</div>
                 </div>
             </div>
             <div th:if="${boards.getList().isEmpty()}">

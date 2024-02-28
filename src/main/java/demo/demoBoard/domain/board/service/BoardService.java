@@ -93,9 +93,19 @@ public class BoardService {
 
     /*
      * 답글 리스트 조회
+     * @param boardId - PK
      * @return List
      */
-    public List<BoardResponse> findByGroupId() {
+    public List<BoardResponse> findByGroupId(final int boardId) {
+        return boardMapper.findByGroupId(boardId);
+    }
+
+    /*
+     * 답글 리스트 조회
+     * @param boardId - PK
+     * @return List
+     */
+    public List<BoardResponse> findBoardByGroup() {
         return boardMapper.findBoardByGroup();
     }
 }
