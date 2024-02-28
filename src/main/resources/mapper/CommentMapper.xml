@@ -111,4 +111,17 @@
         ORDER BY
         cmtId
     </select>
+
+<!--    test query-->
+    <select id="findCmtByGroup" parameterType="int" resultType="demo.demoBoard.domain.comment.model.CommentResponse">
+        SELECT
+        <include refid="commentColumns" />, LEVEL AS cmtLevel
+        FROM
+        cmtTbl
+        WHERE boardId = #{boardId}
+        START WITH  groupId = 0
+        CONNECT BY
+            PRIOR cmtId = groupId
+        ORDER BY cmtId, cmtLevel
+    </select>
 </mapper>

@@ -60,19 +60,26 @@
                     </div>
                 </form>
                 <div th:each="comment, loop : ${comments}" class="comment w-5/6 mx-auto my-5">
-                    <div th:if="${comment.groupId == 0}" class="border-b">
+                    <div class="border-b">
                         <div class="flex">
+                            <div th:if="${comment.cmtLevel != 1}" class="mr-3" th:style="${'margin-left: ' + comment.cmtLevel * 30 + 'px;'}">ㄴ</div>
                             <div th:text="${comment.cmtWriter}" class="mr-5 font-bold"></div>
                             <span th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
                             <span th:if="${comment.modifyDate != null}">(수정됨)</span>
                             <div class="text-sm ml-auto">
-                                <button class="reBtn border border-gray-400 px-1 rounded">답글</button>
-                                <button class="editBtn border border-gray-400 px-1 rounded">수정</button>
-                                <button class="cmtDelete border border-gray-400 px-1 rounded">삭제</button>
+                                <div th:if="${!comment.cmtDel}">
+                                    <button class="reBtn border border-gray-400 px-1 rounded">답글</button>
+                                    <button class="editBtn border border-gray-400 px-1 rounded">수정</button>
+                                    <button class="cmtDelete border border-gray-400 px-1 rounded">삭제</button>
+                                </div>
                             </div>
                         </div>
                         <div class="relative">
-                            <div th:text="${comment.cmtCnt}" class="cmtCnt py-2"></div>
+                            <div th:if="${comment.cmtDel}" class="cmtCnt py-2 line-through">삭제된 댓글입니다.</div>
+                            <div th:if="${!comment.cmtDel}" class="cmtCnt py-2">
+                                <div th:if="${comment.cmtLevel != 1}" th:text="${comment.cmtCnt}" class="cmtCnt py-2 pl-6" th:style="${'margin-left: ' + comment.cmtLevel * 30 + 'px;'}"></div>
+                                <div th:if="${comment.cmtLevel == 1}" th:text="${comment.cmtCnt}" class="cmtCnt py-2"></div>
+                            </div>
                             <form method="post" th:action="@{/comment/modify}" autocomplete="off" class="edit-space w-full hidden">
                                 <div class="flex hidden">
                                     <input type="hidden" name="cmtId" th:value="${comment.cmtId}">
@@ -84,9 +91,6 @@
                                     <input type="submit" value="저장" class="save-button border px-1 bg-indigo-500 rounded">
                                 </div>
                             </form>
-                            <div class="recomment-space pl-3" th:each="test, loop : ${comments}">
-                                <div th:if="${test.groupId == comment.cmtId}" th:text="${test.cmtCnt}"></div>
-                            </div>
                             <form method="post" th:action="@{|/comment/add/${comment.cmtId}|}" autocomplete="off" class="recmt-space w-full hidden">
                                 <div class="flex border border-b-0">
                                     <input type="hidden" name="boardId" th:value="${comment.boardId}"/>

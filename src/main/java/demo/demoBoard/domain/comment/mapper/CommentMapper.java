@@ -51,12 +51,14 @@ public interface CommentMapper {
      * @param groupId
      * @return 대댓글 리스트
      */
-    List<CommentResponse> findAllByGroupId(int GroupId);
+    List<CommentResponse> findAllByGroupId(int groupId);
 
     /*
      * 댓글 수 카운팅
      * @param postId - 게시글 번호 (FK)
      * @return 댓글 수
      */
-    int count(int boardId);
+//    int count(int boardId);
+
+    List<CommentResponse> findCmtByGroup(int boardId);
 }

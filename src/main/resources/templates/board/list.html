@@ -39,9 +39,19 @@
                     <div class="w-48" th:text="${#temporals.format(board.createDate, 'yy-MM-dd HH:mm:ss')}"></div>
                 </div>
                 <div class="reBoard-space">
-                    <div th:each="reBoard, loop : ${reBoards}" th:if="${reBoard.groupId == board.boardId}" class="mb-3 text-left flex">
-                        <div class="w-40 text-right mr-2">[답글]</div>
-                        <a th:text="${reBoard.boardTitle}" th:href="@{|/board/${reBoard.boardId}|}"></a>
+                    <div th:each="reBoard, loop : ${reBoards}" th:if="${reBoard.groupId == board.boardId}" class="mb-3 text-left">
+                        <div class="flex">
+                            <div class="w-40 text-right mr-2">[답글]</div>
+                            <a th:text="${reBoard.boardTitle}" th:href="@{|/board/${reBoard.boardId}|}"></a>
+                        </div>
+                        <div class="reBoard-space block w-11/12 mx-auto">
+                            <div th:each="reBoard2, loop : ${reBoards}" th:if="${reBoard2.groupId == reBoard.boardId}" class="mb-3 text-left">
+                                <div class="flex">
+                                    <div class="w-40 text-right mr-2">[답글]</div>
+                                    <a th:text="${reBoard2.boardTitle}" th:href="@{|/board/${reBoard2.boardId}|}"></a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -105,8 +115,6 @@
             document.getElementById('search_kwc').value = kwcValue;
         }
     };
-
-
 
 </script>
 </html>

@@ -85,4 +85,10 @@ public class CommentService {
     public List<CommentResponse> findAllByGroupId(final int groupId) {
         return commentMapper.findAllByGroupId(groupId);
     }
+
+    public List<CommentResponse> findCmtByGroup(final int boardId) {
+        System.out.println("service check");
+        System.out.println(boardId);
+        return commentMapper.findCmtByGroup(boardId);
+    }
 }

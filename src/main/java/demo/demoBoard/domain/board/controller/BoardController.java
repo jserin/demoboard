@@ -48,14 +48,16 @@ public class BoardController {
     public String detail(@PathVariable("boardId") Integer boardId, Model model) {
 
         BoardResponse board = boardService.findBoardById(boardId);
-        List<CommentResponse> comments = commentService.findAllComment(boardId);
         List<FileResponse> files = fileService.findAllFileByBoardId(boardId);
         List<BoardResponse> reBoards = boardService.findByGroupId(boardId);
+        List<CommentResponse> comments = commentService.findCmtByGroup(boardId);
+
+
 
         model.addAttribute("board", board);
-        model.addAttribute("comments", comments);
         model.addAttribute("files", files);
-        model.addAttribute("reBoards", reBoards);;
+        model.addAttribute("reBoards", reBoards);
+        model.addAttribute("comments", comments);;
         return "board/detail";
     }
     

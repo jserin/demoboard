@@ -15,4 +15,5 @@ public class CommentResponse {
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
     private boolean cmtDel;
+    private int cmtLevel;
 }
