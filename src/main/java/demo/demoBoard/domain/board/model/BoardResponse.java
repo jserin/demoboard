@@ -19,4 +19,7 @@ public class BoardResponse {
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
     private boolean boardDel;
+    private int boardLevel;
+
+    private List<BoardResponse> reBoards;
 }

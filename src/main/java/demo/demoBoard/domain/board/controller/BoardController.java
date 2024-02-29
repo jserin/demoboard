@@ -35,11 +35,20 @@ public class BoardController {
     @GetMapping("")
     public String index(@ModelAttribute("params") final SearchDto params, Model model) {
         PagingResponse<BoardResponse> boards = boardService.findAll(params);
-        List<BoardResponse> reBoards = boardService.findBoardByGroup();
+        System.out.println(boards.getList().get(1).getBoardTitle());
+
+        for (int i = 0; i < boards.getList().size(); i++) {
+            System.out.println("????");
+            System.out.println(i);
+            List<BoardResponse> reBoards = boardService.test(boards.getList().get(i).getBoardId());
+
+            boards.getList().get(i).setReBoards(reBoards);
+        }
+
+        System.out.println("????");
+        System.out.println(boards.getList().get(5).getReBoards());
 
         model.addAttribute("boards", boards);
-        model.addAttribute("reBoards", reBoards);
-
         return "board/list";
     }
 

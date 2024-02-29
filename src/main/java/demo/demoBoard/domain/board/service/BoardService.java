@@ -105,7 +105,15 @@ public class BoardService {
      * @param boardId - PK
      * @return List
      */
-    public List<BoardResponse> findBoardByGroup() {
-        return boardMapper.findBoardByGroup();
+    public List<BoardResponse> findBoardByGroup(final int boardId) {
+        return boardMapper.findBoardByGroup(boardId);
+    }
+
+    public List<BoardResponse> test(final int boardId) {
+        return boardMapper.findBoardByGroup(boardId);
+    }
+
+    public List<BoardResponse> findReBoardsByBoardId(int boardId) {
+        return boardMapper.findBoardByGroup(boardId);
     }
 }

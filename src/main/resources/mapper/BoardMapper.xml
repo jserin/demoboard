@@ -162,16 +162,15 @@
         boardId
     </select>
 
-    <!--   답글 리스트 조회   param x  -->
-    <select id="findBoardByGroup" resultType="demo.demoBoard.domain.board.model.BoardResponse">
+    <!--   답글 리스트 조회   -->
+    <select id="findBoardByGroup" parameterType="int" resultType="demo.demoBoard.domain.board.model.BoardResponse">
         SELECT
         <include refid="boardColumns" />, LEVEL AS boardLevel
         FROM
         board
-        START WITH  groupId = 0
+        START WITH  groupId = #{boardId}
         CONNECT BY
         PRIOR boardId = groupId
-        ORDER BY boardId, boardLevel
     </select>
 
 </mapper>

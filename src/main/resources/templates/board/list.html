@@ -38,8 +38,11 @@
                     <div th:text="${board.boardWriter}" class="w-44">></div>
                     <div class="w-48" th:text="${#temporals.format(board.createDate, 'yy-MM-dd HH:mm:ss')}"></div>
                 </div>
-                <div th:if="${!reBoards.isEmpty()}" th:each="reBoard, loop : ${reBoards}">
-                    <div th:text="${reBoard.boardTitle}">하하</div>
+                <div th:if="${!board.reBoards.isEmpty()}" th:each="reBoard : ${board.reBoards}" class="flex text-center items-center my-3">
+                    <div class="w-20 text-right px-2" th:style="${'margin-left: ' + reBoard.boardLevel * 20 + 'px;'}">ㄴ</div>
+                    <a th:href="@{|/board/${reBoard.boardId}|}" th:text="${reBoard.boardTitle}" class="text-left w-full"></a>
+                    <div th:text="${reBoard.boardWriter}" class="w-44">></div>
+                    <div class="w-48 mr-0" th:text="${#temporals.format(reBoard.createDate, 'yy-MM-dd HH:mm:ss')}"></div>
                 </div>
             </div>
             <div th:if="${boards.getList().isEmpty()}">
