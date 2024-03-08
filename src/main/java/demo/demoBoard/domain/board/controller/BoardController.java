@@ -35,18 +35,12 @@ public class BoardController {
     @GetMapping("")
     public String index(@ModelAttribute("params") final SearchDto params, Model model) {
         PagingResponse<BoardResponse> boards = boardService.findAll(params);
-        System.out.println(boards.getList().get(1).getBoardTitle());
 
         for (int i = 0; i < boards.getList().size(); i++) {
-            System.out.println("????");
-            System.out.println(i);
             List<BoardResponse> reBoards = boardService.test(boards.getList().get(i).getBoardId());
 
             boards.getList().get(i).setReBoards(reBoards);
         }
-
-        System.out.println("????");
-        System.out.println(boards.getList().get(5).getReBoards());
 
         model.addAttribute("boards", boards);
         return "board/list";
@@ -55,13 +49,10 @@ public class BoardController {
     // 게시글 상세 페이지
     @GetMapping("/{boardId}")
     public String detail(@PathVariable("boardId") Integer boardId, Model model) {
-
         BoardResponse board = boardService.findBoardById(boardId);
         List<FileResponse> files = fileService.findAllFileByBoardId(boardId);
         List<BoardResponse> reBoards = boardService.findByGroupId(boardId);
         List<CommentResponse> comments = commentService.findCmtByGroup(boardId);
-
-
 
         model.addAttribute("board", board);
         model.addAttribute("files", files);

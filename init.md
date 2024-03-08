@@ -20,7 +20,7 @@ fileSize NUMBER,
 createDate TIMESTAMP DEFAULT sysdate,
 modifyDate TIMESTAMP,
 fileDel CHAR(1) NOT NULL,
-boardId NUMBER,
+boardId NUMBER NOT NULL,
 FOREIGN KEY (boardId) REFERENCES board(boardId)
 );
 
@@ -38,7 +38,8 @@ createDate TIMESTAMP DEFAULT sysdate,
 modifyDate TIMESTAMP,
 groupId NUMBER,
 boardId NUMBER NOT NULL,
-cmtDel CHAR(1) NOT NULL
+cmtDel CHAR(1) NOT NULL,
+FOREIGN KEY (boardId) REFERENCES board(boardId)
 );
 
 CREATE SEQUENCE board_seq
